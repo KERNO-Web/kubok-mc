@@ -440,3 +440,6 @@ demoForm(mo, (f) => `${f.get("name")}, футболка «${f.get("tee")}», р�
     if (Math.abs(dx) > 50) lbShow(lbIdx + (dx < 0 ? 1 : -1));
   });
 }
+
+// Main Event: «vs» в подписи пары — красным
+$$(".slide figcaption b").forEach((b) => { b.innerHTML = b.textContent.replace(/ vs /i, " <i>vs</i> "); });

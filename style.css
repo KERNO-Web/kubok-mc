@@ -837,6 +837,18 @@ body::after, .cover::after, .event::after, .lower__bg::after, .org__stage::after
 .krug--svoboda .krug__row, .krug--btb .krug__row { --h: clamp(220px, 19vw, 400px); }
 
 
+/* v36 Main Event: пара крупно и по центру, VS красным (оборачивает app.js) */
+.extra__view .slide figcaption { flex-direction: column; justify-content: center; gap: 6px; padding: 16px 8px 20px; text-align: center; }
+.extra__view .slide figcaption b { width: 100%; font: 900 clamp(28px, 3vw, 48px)/1 var(--slab); letter-spacing: .01em; }
+.extra__view .slide figcaption b i { font-style: normal; color: #b3121a; padding: 0 .18em; }
+.extra__view .slide figcaption .btn { margin: 6px auto 0; }
+.extra__view .slide { display: flex; flex-direction: column; }
+.extra__view .slide figcaption { flex: 1; }
+
+/* v36 Св*бода: стена видна на всю высоту блока, карточки полупрозрачные */
+.sv::before { background: linear-gradient(#0c0a09, rgba(12, 10, 9, .55) 120px, rgba(12, 10, 9, 0) 320px), linear-gradient(transparent 88%, #0c0a09 100%), image-set(url("assets/svoboda-street.webp") 1x, url("assets/svoboda-street-2x.jpg") 2x) 50% 0 / cover no-repeat; filter: blur(3px) brightness(.62); }
+.sv .tile { background: rgba(10, 9, 12, .55); }
+
 /* ============ v35 Мобилка по аудиту (docs/AUDIT_MOBILE.md). Блок последний — поздние правила для ПК его не перебивают ============ */
 
 /* Main Event: стрелки по центру кадра на любой ширине (cqw = ширина кадра внутри рамки) */
@@ -916,4 +928,16 @@ html.menu-open { overflow: hidden; }
   .tee__flip button { min-height: 40px; padding-inline: 12px; }
   .mo__sizes { grid-template-columns: repeat(5, minmax(0, 1fr)); }
   .final__copy { min-height: 44px; }
+}
+
+/* v36 Тач-экраны: наведение не срабатывает от пальца при прокрутке — организаторы не моргают цветом */
+@media (hover: none) {
+  .org:hover .org__ph.org__ph--a { opacity: 1 !important; scale: 1; }
+  .org:hover .org__ph--b { opacity: 0; }
+  .ofr:hover img { scale: 1; filter: grayscale(1) contrast(1.1) brightness(.88); }
+  .ofr:not(.ofr--cut):hover img { filter: grayscale(1) contrast(1.08) brightness(1.25); }
+  .ofr:hover::after { box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .08); }
+}
+@media (max-width: 767px) {
+  .sv::before { inset: 0; filter: blur(2px) brightness(.6); }
 }
