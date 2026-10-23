@@ -285,12 +285,13 @@ if (!still) {
     f.addEventListener("pointermove", (e) => {
       if (e.pointerType !== "mouse") return;
       const r = f.getBoundingClientRect();
-      f.style.setProperty("--ry", ((e.clientX - r.left) / r.width - .5) * 14 + "deg");
-      f.style.setProperty("--rx", (.5 - (e.clientY - r.top) / r.height) * 12 + "deg");
-      f.style.setProperty("--gx", ((e.clientX - r.left) / r.width) * 100 + "%");
-      f.style.setProperty("--gy", ((e.clientY - r.top) / r.height) * 100 + "%");
+      const card = f.closest(".moment") || f;  // наклоняется вся карточка с рамкой, а не только видео
+      card.style.setProperty("--ry", ((e.clientX - r.left) / r.width - .5) * 14 + "deg");
+      card.style.setProperty("--rx", (.5 - (e.clientY - r.top) / r.height) * 12 + "deg");
+      card.style.setProperty("--gx", ((e.clientX - r.left) / r.width) * 100 + "%");
+      card.style.setProperty("--gy", ((e.clientY - r.top) / r.height) * 100 + "%");
     });
-    f.addEventListener("pointerleave", () => { f.style.setProperty("--rx", "0deg"); f.style.setProperty("--ry", "0deg"); });
+    f.addEventListener("pointerleave", () => { const card = f.closest(".moment") || f; card.style.setProperty("--rx", "0deg"); card.style.setProperty("--ry", "0deg"); });
   });
 }
 
