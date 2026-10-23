@@ -12,7 +12,7 @@ const SEASONS = {
     ["sg3dTXCI8GQ", "Title match", "Palmdropov vs Изтолпы"],
     ["kEjqtsZIfQs", "BPM", "Нокту vs Jollo"],
     ["ifDfwytzN74", "BPM", "Никита Мастяк vs Ирен"],
-    ["nPfCwm6pGFU", "BPM", "Майк Стикс vs Кукиш с Хаслом"],
+    ["nPfCwm6pGFU", "Перестр*лка", "Майк Стикс vs Кукиш с Хаслом"],
     ["CG8uANZNedE", "BPM", "GD4 vs Smoke [PlanB]"],
     ["OgdpmpIjeKs", "2x2", "Verch.Fate, Killhomie vs Mickey Mouse, Бач"],
     ["MaFPQ9g302k", "Beatbox battle", "Alphavite, Saidmusician vs Doctor Kapustu!, Checkmate"],
@@ -20,12 +20,12 @@ const SEASONS = {
   ],
   btb: [
     ["LsVvuYnQ_A4", "Title match", "Abbalbisk vs Doctor Kapustu!"],
-    ["R0GMUgBNY_A", "A capella", "Хайд vs Palmdropov"],
+    ["R0GMUgBNY_A", "Перестр*лка", "Хайд vs Palmdropov"],
     ["nKBMggjdfWs", "A capella", "13/47 vs Юля Kiwi"],
     ["-rM3bXoUlU0", "A capella", "Коснарт vs Микси"],
     ["Ua9QH7VbzP8", "A capella", "Бига One vs Вишня"],
     ["tDnHPgZLMQE", "A capella", "Shala vs Xxoc"],
-    ["ZGzIiM49Y2c", "Special", "Epic Rap Battle"],
+    ["ZGzIiM49Y2c", "Epic Rap Battle", "Сыночка-корзиночка vs Дочка-просрочка"],
     ["HTyyo-za-Y4", "Закулисье", "Как это было"],
   ],
 };
@@ -304,6 +304,9 @@ if (!still) {
 }
 
 // Организаторы: по 4 крупных квадратных фото под каждым, ч/б, клик открывает просмотр
+const touchUI = matchMedia("(hover: none)");
+// большой кадр организатора: на телефоне касание переключает на цветной второй кадр и обратно
+$$(".org__stage").forEach((st) => st.addEventListener("click", () => { if (touchUI.matches) st.closest(".org").classList.toggle("is-color"); }));
 const ORG = {"h": [["h-01", 0], ["h-02", 0], ["h-03", 0], ["h-07", 1]], "p": [["p-01", 0], ["p-02", 0], ["p-04", 0], ["p-06", 0]]};
 $$("[data-org]").forEach((art) => {
   const list = ORG[art.dataset.org];
@@ -313,6 +316,7 @@ $$("[data-org]").forEach((art) => {
   grid.addEventListener("click", (e) => {
     const b = e.target.closest(".ofr");
     if (!b) return;
+    if (touchUI.matches && !b.classList.contains("is-color")) { $$(".ofr.is-color").forEach((x) => x.classList.remove("is-color")); b.classList.add("is-color"); return; }
     lbList = urls;
     lb.dataset.skin = "shell";
     lbShow(Number(b.dataset.i));
@@ -332,11 +336,12 @@ const HALL = `<svg class="hall" viewBox="0 0 460 300" role="img" aria-label="С�
   <rect class="zone" data-zone="dance" x="56" y="62" width="348" height="228"/>
   <circle class="zone" data-zone="ring" cx="230" cy="172" r="76"/>
   <circle class="hall__circle" cx="230" cy="172" r="42"/>
-  <rect class="hall__fix" x="192" y="74" width="76" height="18"/>
+  <rect class="hall__fix" x="176" y="67" width="108" height="25"/>
+  <path id="hall-arc" d="M175 172A55 55 0 0 1 285 172" fill="none"/>
   <rect class="hall__fix" x="340" y="248" width="64" height="42"/>
   <text x="230" y="40">БАЛКОН</text><text x="33" y="150" transform="rotate(-90 33 150)">БАЛКОН</text><text x="427" y="150" transform="rotate(90 427 150)">БАЛКОН</text>
-  <text x="110" y="270">ТАНЦПОЛ</text><text x="230" y="118" class="sm">ПРОХОД В КРУГ</text>
-  <text x="230" y="178" class="ring">КРУГ</text><text x="230" y="87" class="sm dark">СУДЬИ</text><text x="372" y="273" class="sm dark">БАР</text>
+  <text x="110" y="270">ТАНЦПОЛ</text><text class="sm"><textPath href="#hall-arc" startOffset="50%">ПРОХОД В КРУГ</textPath></text>
+  <text x="230" y="178" class="ring">КРУГ</text><text x="230" y="84.5" class="sm dark">СУДЬИ</text><text x="372" y="273" class="sm dark">БАР</text>
   <path class="hall__door" d="M200 294H260"/><text x="230" y="288" class="sm">ВХОД</text>
 </svg>`;
 const syncHall = () => {
@@ -404,11 +409,14 @@ demoForm(buy, (f) => {
 // Мерч: заказ футболки — модель, размер, имя, контакт
 const mo = $(".buy--merch");
 const tees = $$(".tee").map((t) => $(".tee__name", t).textContent);
-$(".mo__tees", mo).innerHTML = "<legend>Модель</legend>" + tees.map((n, i) => `<label class="chip"><input type="radio" name="tee" value="${n}"${i ? "" : " checked"}><span>${n}</span></label>`).join("");
+const sold = $$(".tee").map((t) => t.classList.contains("tee--sold"));
+const firstFree = sold.indexOf(false);
+$(".mo__tees", mo).innerHTML = "<legend>Модель</legend>" + tees.map((n, i) => `<label class="chip${sold[i] ? " chip--sold" : ""}"><input type="radio" name="tee" value="${n}"${sold[i] ? " disabled" : ""}${i === firstFree ? " checked" : ""}><span>${n}</span></label>`).join("");
+$$(".tee--sold .tee__order").forEach((b) => { b.disabled = true; b.textContent = "Нет в наличии"; });
 $(".mo__sizes", mo).insertAdjacentHTML("beforeend", ["S", "M", "L", "XL", "XXL"].map((z) => `<label class="chip"><input type="radio" name="size" value="${z}"${z === "L" ? " checked" : ""}><span>${z}</span></label>`).join(""));
 $$(".tee").forEach((t, i) => $(".tee__order", t).addEventListener("click", () => {
   $("form", mo).reset();
-  $$("input[name=tee]", mo)[i].checked = true;
+  $$("input[name=tee]", mo)[sold[i] ? firstFree : i].checked = true;
   step(mo, "form");
   mo.showModal();
 }));
