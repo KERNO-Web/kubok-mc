@@ -629,7 +629,7 @@ body { background: #0c0a09; }
 .ofr--cut img { filter: grayscale(1) contrast(1.1); }
 
 /* v26: средний блок BTB (A CAPELLA, дата, текст) опущен ниже — между заголовком и афишей */
-.btb__head { grid-template-rows: 2.2fr auto auto auto 1fr; }
+.btb__head { grid-template-rows: 1fr auto auto auto 0; }
 
 /* v27 Попап покупки (выбор: форма сайта / Bibilet) и заказ мерча — билет с перфорацией */
 .buy { width: min(520px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); margin: auto; padding: 0; border: 0; overflow: auto; background: #f1ebde; color: #161211; box-shadow: 0 40px 80px -20px rgba(0, 0, 0, .9); }
@@ -990,6 +990,8 @@ html.menu-open { overflow: hidden; }
 }
 @media (max-width: 767px) {
   .sv::before { inset: 0; filter: blur(2px) brightness(.6); }
+  /* BTB как Св*бода: фон на всю высоту, затемнение только в конце */
+  .btb::before { inset: 0; filter: blur(2px) brightness(.6); background: linear-gradient(#0c0a09, rgba(12, 10, 9, .55) 120px, rgba(12, 10, 9, 0) 320px), linear-gradient(transparent 88%, #0c0a09 100%), image-set(url("assets/btb-collage2.webp") 1x, url("assets/btb-collage2-2x.jpg") 2x) 50% 0 / cover no-repeat; }
 }
 @media (hover: none) {
   .org.is-color .org__ph.org__ph--a { opacity: 0 !important; }
