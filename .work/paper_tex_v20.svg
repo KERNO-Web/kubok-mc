@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- v20: тайл старой бумаги под их доску HUNT (крем + грязь + пятна + волокна), stitchTiles = бесшовно -->
+  <filter id="p" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+    <!-- крупные разводы -->
+    <feTurbulence type="fractalNoise" baseFrequency="0.0078" numOctaves="4" seed="7" stitchTiles="stitch" result="n1"/>
+    <feColorMatrix in="n1" type="matrix" values="0 0 0 0 .42  0 0 0 0 .28  0 0 0 0 .14  1.7 0 0 0 -.74" result="mott"/>
+    <!-- светлые выгоревшие места -->
+    <feTurbulence type="fractalNoise" baseFrequency="0.011" numOctaves="3" seed="31" stitchTiles="stitch" result="n2"/>
+    <feColorMatrix in="n2" type="matrix" values="0 0 0 0 .97  0 0 0 0 .94  0 0 0 0 .86  0 1.8 0 0 -.92" result="light"/>
+    <!-- пятна-фоксинг -->
+    <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="3" seed="12" stitchTiles="stitch" result="n3"/>
+    <feColorMatrix in="n3" type="matrix" values="0 0 0 0 .45  0 0 0 0 .3  0 0 0 0 .15  0 0 2.6 0 -1.62" result="fox"/>
+    <!-- мелкая грязь -->
+    <feTurbulence type="fractalNoise" baseFrequency="0.42" numOctaves="3" seed="4" stitchTiles="stitch" result="n4"/>
+    <feColorMatrix in="n4" type="matrix" values="0 0 0 0 .2  0 0 0 0 .13  0 0 0 0 .07  10 0 0 0 -7.4" result="grime"/>
+    <!-- волокна вдоль листа -->
+    <feTurbulence type="fractalNoise" baseFrequency="0.006 0.32" numOctaves="2" seed="21" stitchTiles="stitch" result="n5"/>
+    <feColorMatrix in="n5" type="matrix" values="0 0 0 0 .35  0 0 0 0 .24  0 0 0 0 .13  0 .5 0 0 -.22" result="fib"/>
+    <!-- зерно бумаги -->
+    <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="1" seed="9" stitchTiles="stitch" result="n6"/>
+    <feColorMatrix in="n6" type="matrix" values="0 0 0 0 .3  0 0 0 0 .2  0 0 0 0 .1  0 0 .3 0 -.17" result="tooth"/>
+    <feFlood flood-color="#e0d0ac" result="base"/>
+    <feMerge>
+      <feMergeNode in="base"/>
+      <feMergeNode in="light"/>
+      <feMergeNode in="mott"/>
+      <feMergeNode in="fib"/>
+      <feMergeNode in="fox"/>
+            <feMergeNode in="tooth"/>
+      <feMergeNode in="grime"/>
+    </feMerge>
+  </filter>
+  <rect width="512" height="512" filter="url(#p)"/>
+  <!-- заломы и царапины (внутри тайла, не на швах) -->
+  <g fill="none" stroke-linecap="round">
+    <path d="M40 120 L210 150 L360 132 L470 168" stroke="#fff6e2" stroke-opacity=".35" stroke-width="1.2"/>
+    <path d="M40 121.5 L210 151.5 L360 133.5 L470 169.5" stroke="#5a3e22" stroke-opacity=".22" stroke-width="1"/>
+    <path d="M300 300 L330 470" stroke="#5a3e22" stroke-opacity=".18" stroke-width="1"/>
+    <path d="M301.4 300 L331.4 470" stroke="#fff6e2" stroke-opacity=".28" stroke-width="1"/>
+    <path d="M80 380 Q160 360 230 400" stroke="#4a301a" stroke-opacity=".16" stroke-width=".8"/>
+  </g>
+</svg>

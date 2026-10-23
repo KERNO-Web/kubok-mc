@@ -1,0 +1,9 @@
+<!doctype html><meta charset="utf-8">
+<style>body{margin:0;background:#000}div{position:relative;width:1254px;height:1254px;background:url(../assets/hunt-board2.webp)}
+i{position:absolute;border-left:1px solid #0f0;top:0;bottom:0}b{position:absolute;border-top:1px solid #0f0;left:0;right:0}
+s{position:absolute;color:#0f0;font:bold 13px monospace;text-decoration:none;background:#000}</style>
+<div id="d"></div>
+<script>
+const d=document.getElementById('d');
+for(let v=0;v<=1254;v+=50){d.insertAdjacentHTML('beforeend',`<i style="left:${v}px"></i><b style="top:${v}px"></b>`);if(v%100==0){d.insertAdjacentHTML('beforeend',`<s style="left:${v+2}px;top:2px">${v}</s><s style="top:${v+2}px;left:2px">${v}</s>`)}}
+</script>

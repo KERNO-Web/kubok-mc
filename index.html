@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Кубок МЦ</title>
+<meta name="description" content="Кубок МЦ: баттл-рэп в кругу. Ближайший ивент HUNT, 1/4 финала, 24 октября в Москве.">
+<meta name="theme-color" content="#0e0e0e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Onest:wght@400;500;700&family=Roboto+Slab:wght@900&family=Anton&family=Dela+Gothic+One&family=Archivo:wdth,wght@62,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=67">
+<link rel="preload" as="image" href="assets/bw/ph-4.jpg">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+</svg>
+
+<header class="mast">
+  <a href="#top" class="mast__logo" aria-label="Кубок МЦ, наверх"><img src="assets/logo.svg" alt="" width="54" height="44"></a>
+  <nav class="mast__nav" aria-label="Разделы">
+    <a href="#event">HUNT</a>
+    <a href="#svoboda">Св*бода</a>
+    <a href="#btb">Back to Basics</a>
+    <a href="#orgs">Организаторы</a>
+    <a href="#archive">Архив</a>
+    <a href="#merch">Мерч</a>
+    <a href="#contacts">Контакты</a>
+  </nav>
+  <button class="mast__cta" data-ticket="quarter">Билеты</button>
+</header>
+
+<main id="top">
+
+  <!-- КАРКАС. Обложка: фото круга, КУБОК МЦ за людьми -->
+  <section class="cover" data-skin="shell">
+    <h1 class="sr-only">Кубок МЦ: баттл-рэп в кругу</h1>
+    <img class="cover__bg" src="assets/bw/ph-4.jpg" alt="Раунд в кругу Кубка МЦ" width="1280" height="853">
+    <img class="cover__logo" src="assets/logo.svg" alt="" aria-hidden="true" width="336" height="271">
+    <img class="cover__fg" src="assets/bw/ph-4-cut.png" alt="" aria-hidden="true" width="1600" height="1066">
+    <p class="cover__kicker">Баттл-рэп в&nbsp;кругу. Без&nbsp;сцены, соперник в&nbsp;полуметре.</p>
+    <div class="cover__band">
+      <p><b>HUNT</b><span>1/4 финала</span><span>24 октября</span><span>Москва</span></p>
+      <button class="btn btn--ink" data-ticket="quarter">Купить билет</button>
+    </div>
+  </section>
+
+  <!-- СМЕННАЯ ЗОНА: текущий ивент. Сейчас HUNT -->
+  <div class="event" id="event" data-skin="hunt">
+    <section class="ev-head">
+      <div class="wall wall--l" aria-hidden="true"><div class="wall__in"><i class="scrap scrap--a"></i><figure class="pol pol--a"><img src="assets/krug/hunt/01.jpg" alt="" loading="lazy"></figure><i class="scrap scrap--lined"></i><figure class="pol pol--b"><img src="assets/krug/hunt/03.jpg" alt="" loading="lazy"></figure></div></div>
+      <div class="wall wall--r" aria-hidden="true"><div class="wall__in"><figure class="pol pol--c"><img src="assets/krug/hunt/04.jpg" alt="" loading="lazy"></figure><i class="scrap scrap--b"></i><figure class="pol pol--d"><img src="assets/krug/hunt/02.jpg" alt="" loading="lazy"></figure><i class="scrap scrap--c"></i></div></div>
+      <div class="ev-head__in">
+        <img class="ev-head__plate" src="assets/hunt-plate.png" alt="Кубок МЦ: HUNT, 1/4 финала" width="900" height="675">
+        <p class="ev-head__date"><b>24 октября</b><span>Москва <i>·</i> 16+</span></p>
+        <p class="ev-head__sub">Четыре пары турнира, три баттла main event вне сетки и&nbsp;Deathmatch Clash в&nbsp;один вечер.</p>
+        <button class="btn btn--accent ev-head__btn" data-ticket="quarter">Купить билет</button>
+      </div>
+    </section>
+
+    <section class="ev-grid">
+      <div class="bracket">
+        <h2 class="tag">Турнир. Пары 1/4 финала</h2>
+        <ol class="bracket__list"></ol>
+        <h3 class="tag tag--ink">Пропали без&nbsp;вести</h3>
+        <div class="gone"></div>
+      </div>
+      <div class="extra">
+        <div class="extra__bar">
+          <h2 class="tag">Main Event</h2>
+          <span class="extra__count" aria-live="polite">1 / 5</span>
+          <button class="extra__nav" data-dir="-1" aria-label="Назад">←</button>
+          <button class="extra__nav" data-dir="1" aria-label="Вперёд">→</button>
+        </div>
+        <div class="extra__view">
+        <button class="extra__nav extra__nav--big extra__nav--l" data-dir="-1" aria-label="Назад">←</button>
+        <button class="extra__nav extra__nav--big extra__nav--r" data-dir="1" aria-label="Вперёд">→</button>
+        <div class="slides" tabindex="0" aria-label="Баттлы вне турнира, листаются вбок">
+          <figure class="slide">
+            <img src="assets/hunt-main.jpg" alt="Main event: Gokilla из Бишкека против Zeiman из Воронежа" width="1280" height="720" loading="lazy">
+            <figcaption><b>Gokilla vs Zeiman</b></figcaption>
+          </figure>
+          <figure class="slide">
+            <img src="assets/hunt-main-miksi.jpg" alt="Main event: Микси из Селенгинска против .OTRIX из Краснодара" width="1280" height="720" loading="lazy">
+            <figcaption><b>Микси vs .OTRIX</b></figcaption>
+          </figure>
+          <figure class="slide">
+            <img src="assets/hunt-main-yami.jpg" alt="Main event: Ями из Воронежа против Кении из Лениногорска" width="1280" height="720" loading="lazy">
+            <figcaption><b>Ями vs Кения</b></figcaption>
+          </figure>
+          <figure class="slide">
+            <img src="assets/hunt-dm.jpg" alt="Deathmatch Clash: Hidji 17, Мишарик, Молодой Казах, МЦ Доналдас, Kumska" width="1280" height="720" loading="lazy">
+            <figcaption><b>Deathmatch Clash</b> Hidji 17, Мишарик, Молодой Казах, МЦ Доналдас, Kumska</figcaption>
+          </figure>
+          <figure class="slide">
+            <img src="assets/hunt-after.jpg" alt="Afterparty: 24 октября, 22:30, бар БТК, проспект Мира 102к1" width="1280" height="720" loading="lazy">
+            <figcaption><b>Afterparty</b> <button class="btn btn--accent" data-ticket="after">Вход 500&nbsp;₽</button></figcaption>
+          </figure>
+        </div>
+        </div>
+      </div>
+    </section>
+    <div class="moments moments--hunt" data-moments="hunt">
+      <h3 class="moments__h"><span class="tag">Лучшие моменты <small>1/8 финала</small></span></h3>
+      <div class="moments__row"></div>
+    </div>
+    <div class="krug krug--hunt" data-krug="hunt">
+      <div class="krug__bar"><h3 class="krug__h"><span class="tag">Фото с баттлов <small>1/8 финала, 29 августа</small></span></h3><span class="krug__count" aria-live="polite"></span><button class="krug__nav" data-dir="-1" aria-label="Назад">←</button><button class="krug__nav" data-dir="1" aria-label="Вперёд">→</button></div>
+      <div class="krug__row" tabindex="0" aria-label="Фото из круга, листаются вбок"></div>
+    </div>
+  </div>
+
+  <!-- СЕЗОН: Св*бода -->
+  <section class="season sv" id="svoboda" data-skin="svoboda">
+    <div class="season__head">
+      <div class="sv__left">
+        <h2 class="sv__title"><img src="assets/svoboda-paint.png" alt="Св*бода" width="2000" height="667"></h2>
+        <p class="sv__bars"><span>Прошлый сезон</span><span>6 июня</span><span>Клуб «Свобода», Ленинградский просп., 47</span></p>
+        <p class="sv__text">Title match, BPM, 2x2 и&nbsp;битбокс-баттл. Все выпуски сезона ниже.</p>
+      </div>
+    </div>
+    <div class="tiles" data-season="svoboda"></div>
+    <div class="moments moments--svoboda" data-moments="svoboda">
+      <h3 class="moments__h"><span class="moments__pill">Лучшие моменты</span></h3>
+      <div class="moments__row"></div>
+    </div>
+    <div class="krug krug--svoboda" data-krug="svoboda">
+      <div class="krug__bar"><h3 class="krug__h"><span class="moments__pill">Фото с баттлов</span></h3><span class="krug__count" aria-live="polite"></span><button class="krug__nav" data-dir="-1" aria-label="Назад">←</button><button class="krug__nav" data-dir="1" aria-label="Вперёд">→</button></div>
+      <div class="krug__row" tabindex="0" aria-label="Фото из круга, листаются вбок"></div>
+    </div>
+  </section>
+
+  <!-- СЕЗОН: Back to Basics -->
+  <section class="season btb" id="btb" data-skin="btb">
+    <div class="season__head">
+      <div class="btb__head">
+        <h2 class="btb__title"><img src="assets/btb-title.png" alt="Back to Basics" width="640" height="545"></h2>
+        <p class="btb__bar">A capella</p>
+        <p class="btb__when">14 февраля 2026 <i>/</i> клуб&nbsp;Castle,<br>ул.&nbsp;Вишнёвая,&nbsp;13</p>
+        <p class="btb__text">Без битов: только голос, панчи и&nbsp;зал. Title match, пять пар и&nbsp;Epic Rap Battle на&nbsp;день влюблённых.</p>
+      </div>
+      <img class="season__poster" src="assets/poster-btb.jpg" alt="Афиша Back to Basics" width="598" height="800" loading="lazy">
+    </div>
+    <div class="tiles" data-season="btb"></div>
+    <div class="moments moments--btb" data-moments="btb">
+      <h3 class="moments__h"><span class="moments__plate">Лучшие моменты</span></h3>
+      <div class="moments__row"></div>
+    </div>
+    <div class="krug krug--btb" data-krug="btb">
+      <div class="krug__bar"><h3 class="krug__h"><span class="moments__plate">Фото с баттлов</span></h3><span class="krug__count" aria-live="polite"></span><button class="krug__nav" data-dir="-1" aria-label="Назад">←</button><button class="krug__nav" data-dir="1" aria-label="Вперёд">→</button></div>
+      <div class="krug__row" tabindex="0" aria-label="Фото из круга, листаются вбок"></div>
+    </div>
+  </section>
+
+  <!-- КАРКАС. Организаторы -->
+  <div class="lower">
+    <div class="lower__bg" aria-hidden="true"><div class="lw lw--bw"><img src="assets/krug/svoboda/13.jpg" alt="" loading="lazy"><img src="assets/krug/btb/17.jpg" alt="" loading="lazy"><img src="assets/krug/svoboda/12.jpg" alt="" loading="lazy"><img src="assets/krug/btb/14.jpg" alt="" loading="lazy"><img src="assets/krug/svoboda/07.jpg" alt="" loading="lazy"><img src="assets/krug/btb/11.jpg" alt="" loading="lazy"><img src="assets/krug/svoboda/09.jpg" alt="" loading="lazy"><img src="assets/krug/btb/16.jpg" alt="" loading="lazy"><img src="assets/krug/svoboda/17.jpg" alt="" loading="lazy"><img src="assets/krug/btb/04.jpg" alt="" loading="lazy"><img src="assets/krug/svoboda/06.jpg" alt="" loading="lazy"><img src="assets/krug/btb/09.jpg" alt="" loading="lazy"></div><div class="lw lw--col"><img src="assets/sc/svoboda-13.webp" alt="" loading="lazy"><img src="assets/sc/btb-17.webp" alt="" loading="lazy"><img src="assets/sc/svoboda-12.webp" alt="" loading="lazy"><img src="assets/sc/btb-14.webp" alt="" loading="lazy"><img src="assets/sc/svoboda-07.webp" alt="" loading="lazy"><img src="assets/sc/btb-11.webp" alt="" loading="lazy"><img src="assets/sc/svoboda-09.webp" alt="" loading="lazy"><img src="assets/sc/btb-16.webp" alt="" loading="lazy"><img src="assets/sc/svoboda-17.webp" alt="" loading="lazy"><img src="assets/sc/btb-04.webp" alt="" loading="lazy"><img src="assets/sc/svoboda-06.webp" alt="" loading="lazy"><img src="assets/sc/btb-09.webp" alt="" loading="lazy"></div></div>
+  <section class="orgs" id="orgs" data-skin="shell">
+    <h2 class="orgs__h">Организаторы</h2>
+    <div class="orgs__row">
+      <article class="org" data-org="h">
+        <div class="org__stage">
+          <h3 class="org__name" aria-label="Halloween">Halloween</h3>
+          <img class="org__ph org__ph--a" src="assets/orgs/halloween-a.webp" alt="Halloween" loading="lazy">
+          <img class="org__ph org__ph--b" src="assets/orgs/halloween-b.webp" alt="" loading="lazy">
+        </div>
+        <div class="org__grid"></div>
+      </article>
+      <article class="org" data-org="p">
+        <div class="org__stage">
+          <h3 class="org__name" aria-label="МЦ Похоронил">МЦ<br>Похоронил</h3>
+          <img class="org__ph org__ph--a" src="assets/orgs/pohoronil-a.webp" alt="МЦ Похоронил" loading="lazy">
+          <img class="org__ph org__ph--b" src="assets/orgs/pohoronil-b.webp" alt="" loading="lazy">
+        </div>
+        <div class="org__grid"></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- КАРКАС. Архив -->
+
+
+  </div>
+
+  <div class="archive-zone">
+  <section class="archive" id="archive" data-skin="shell">
+    <div class="archive__head">
+      <h2>Архив <small>HUNT · 1/8 финала</small></h2>
+      <a href="https://www.youtube.com/@kbkmc" target="_blank" rel="noopener">Весь канал на&nbsp;YouTube</a>
+    </div>
+    <ol class="eps"></ol>
+  </section>
+  </div>
+
+  <div class="merch-zone">
+  <!-- КАРКАС. Мерч (концепт) -->
+  <section class="merch" id="merch" data-skin="shell">
+    <div class="merch__head">
+      <h2>Мерч</h2>
+      <p class="merch__demo">Только для демонстрации</p>
+    </div>
+    <div class="merch__row">
+      <article class="tee" data-side="front">
+        <div class="tee__frame">
+          <img class="tee__img tee__img--front" src="assets/merch/white-front.jpg" alt="Футболка «Белая», спереди" loading="lazy">
+          <img class="tee__img tee__img--back" src="assets/merch/white-back.jpg" alt="Футболка «Белая», сзади" loading="lazy">
+        </div>
+        <div class="tee__bar">
+          <h3 class="tee__name">Белая</h3>
+          <div class="tee__flip" role="group" aria-label="Сторона"><button data-side="front" aria-pressed="true">Спереди</button><button data-side="back" aria-pressed="false">Сзади</button></div>
+        </div>
+        <button class="tee__order" type="button">Заказать</button>
+        <p class="tee__note">Логотип спереди, XX на спине</p>
+      </article>
+      <article class="tee" data-side="front">
+        <div class="tee__frame">
+          <img class="tee__img tee__img--front" src="assets/merch/black-front.jpg" alt="Футболка «Чёрная», спереди" loading="lazy">
+          <img class="tee__img tee__img--back" src="assets/merch/black-back.jpg" alt="Футболка «Чёрная», сзади" loading="lazy">
+        </div>
+        <div class="tee__bar">
+          <h3 class="tee__name">Чёрная</h3>
+          <div class="tee__flip" role="group" aria-label="Сторона"><button data-side="front" aria-pressed="true">Спереди</button><button data-side="back" aria-pressed="false">Сзади</button></div>
+        </div>
+        <button class="tee__order" type="button">Заказать</button>
+        <p class="tee__note">Логотип спереди, XX на спине</p>
+      </article>
+      <article class="tee" data-side="front">
+        <div class="tee__frame">
+          <img class="tee__img tee__img--front" src="assets/merch/model-front.jpg" alt="Футболка «Oversize», спереди" loading="lazy">
+          <img class="tee__img tee__img--back" src="assets/merch/model-back.jpg" alt="Футболка «Oversize», сзади" loading="lazy">
+        </div>
+        <div class="tee__bar">
+          <h3 class="tee__name">Oversize</h3>
+          <div class="tee__flip" role="group" aria-label="Сторона"><button data-side="front" aria-pressed="true">Спереди</button><button data-side="back" aria-pressed="false">Сзади</button></div>
+        </div>
+        <button class="tee__order" type="button">Заказать</button>
+        <p class="tee__note">Кубок спереди, Ultimate на спине</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- КАРКАС. Финал -->
+  </div>
+
+  <footer class="final" id="contacts" data-skin="shell">
+    <img class="final__logo" src="assets/logo.svg" alt="Кубок МЦ" width="336" height="271" loading="lazy">
+    <div class="final__row">
+      <p class="final__next"><b>HUNT, 1/4 финала</b> 24 октября, Москва</p>
+      <button class="btn btn--ink" data-ticket="quarter">Купить билет</button>
+      <nav class="final__links" aria-label="Мы в сети">
+        <a href="https://t.me/kbkmc" target="_blank" rel="noopener"><svg class="soc" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg><span>Telegram</span><i>@kbkmc</i></a>
+        <a href="https://vk.com/kbkmc" target="_blank" rel="noopener"><svg class="soc" viewBox="0 0 24 24" aria-hidden="true"><path d="m9.489.004.729-.003h3.564l.73.003.914.01.433.007.418.011.403.014.388.016.374.021.36.025.345.03.333.033c1.74.196 2.933.616 3.833 1.516.9.9 1.32 2.092 1.516 3.833l.034.333.029.346.025.36.02.373.025.588.012.41.013.644.009.915.004.98-.001 3.313-.003.73-.01.914-.007.433-.011.418-.014.403-.016.388-.021.374-.025.36-.03.345-.033.333c-.196 1.74-.616 2.933-1.516 3.833-.9.9-2.092 1.32-3.833 1.516l-.333.034-.346.029-.36.025-.373.02-.588.025-.41.012-.644.013-.915.009-.98.004-3.313-.001-.73-.003-.914-.01-.433-.007-.418-.011-.403-.014-.388-.016-.374-.021-.36-.025-.345-.03-.333-.033c-1.74-.196-2.933-.616-3.833-1.516-.9-.9-1.32-2.092-1.516-3.833l-.034-.333-.029-.346-.025-.36-.02-.373-.025-.588-.012-.41-.013-.644-.009-.915-.004-.98.001-3.313.003-.73.01-.914.007-.433.011-.418.014-.403.016-.388.021-.374.025-.36.03-.345.033-.333c.196-1.74.616-2.933 1.516-3.833.9-.9 2.092-1.32 3.833-1.516l.333-.034.346-.029.36-.025.373-.02.588-.025.41-.012.644-.013.915-.009ZM6.79 7.3H4.05c.13 6.24 3.25 9.99 8.72 9.99h.31v-3.57c2.01.2 3.53 1.67 4.14 3.57h2.84c-.78-2.84-2.83-4.41-4.11-5.01 1.28-.74 3.08-2.54 3.51-4.98h-2.58c-.56 1.98-2.22 3.78-3.8 3.95V7.3H10.5v6.92c-1.6-.4-3.62-2.34-3.71-6.92Z"/></svg><span>ВКонтакте</span><i>Сообщество</i></a>
+        <a href="https://www.youtube.com/@kbkmc" target="_blank" rel="noopener"><svg class="soc" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg><span>YouTube</span><i>Все баттлы</i></a>
+        <a href="https://boosty.to/kbkmc" target="_blank" rel="noopener"><svg class="soc" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.661 14.337 6.801 0h6.362L11.88 4.444l-.038.077-3.378 11.733h3.15c-1.321 3.289-2.35 5.867-3.086 7.733-5.816-.063-7.442-4.228-6.02-9.155M8.554 24l7.67-11.035h-3.25l2.83-7.073c4.852.508 7.137 4.33 5.791 8.952C20.16 19.81 14.344 24 8.68 24h-.127z"/></svg><span>Boosty</span><i>Поддержать Кубок</i></a>
+      </nav>
+      <div class="final__mail">
+        <p>Для предложений и&nbsp;сотрудничества</p>
+        <a href="mailto:kubokmc@gmail.com">kubokmc@gmail.com</a>
+        <button class="final__copy" data-copy="kubokmc@gmail.com">Скопировать</button>
+      </div>
+    </div>
+    <p class="final__note">Оплата и&nbsp;возвраты через Bibilet. Неофициальный концепт сайта, сделан <a href="https://t.me/Kernodev" target="_blank" rel="noopener">KERNØ</a>.</p>
+  </footer>
+</main>
+
+<dialog class="lb" aria-label="Фото из круга">
+    <img class="lb__img" alt="">
+    <button class="lb__nav lb__nav--prev" data-dir="-1" aria-label="Предыдущее фото">←</button>
+    <button class="lb__nav lb__nav--next" data-dir="1" aria-label="Следующее фото">→</button>
+    <button class="lb__x" aria-label="Закрыть">×</button>
+    <span class="lb__count"></span>
+  </dialog>
+<dialog class="buy" aria-labelledby="buy-title">
+  <button class="buy__x" aria-label="Закрыть">✕</button>
+  <div class="buy__stub">
+    <p class="buy__kicker">Кубок МЦ</p>
+    <h2 id="buy-title" class="buy__title"></h2>
+    <p class="buy__meta"></p>
+  </div>
+  <div class="buy__step buy__step--pick">
+    <button class="buy__opt buy__opt--site" data-go="form">
+      <span class="buy__badge">Специально для сайта</span>
+      <b>Купить на сайте</b>
+      <i>Пара полей и билет у вас на почте</i>
+    </button>
+    <button class="buy__opt" data-go="bibilet">
+      <b>Через Bibilet</b>
+      <i>Официальная касса Кубка</i>
+    </button>
+  </div>
+  <form class="buy__step buy__step--form" novalidate>
+    <fieldset class="buy__cats"></fieldset>
+    <div class="buy__qty"><span>Билетов</span><button type="button" data-q="-1" aria-label="Меньше">−</button><output>1</output><button type="button" data-q="1" aria-label="Больше">+</button></div>
+    <label class="fld"><span>Имя</span><input name="name" autocomplete="name" required></label>
+    <label class="fld"><span>Телефон или Telegram</span><input name="contact" required placeholder="+7 … или @ник"></label>
+    <label class="fld"><span>Почта для билета</span><input name="email" type="email" autocomplete="email" required></label>
+    <div class="buy__sum"><span>Итого</span><b class="buy__total"></b></div>
+    <button class="btn btn--accent buy__go" type="submit">Перейти к оплате</button>
+    <p class="buy__note">Демо-форма концепта: цены условные, данные никуда не отправляются.</p>
+  </form>
+  <div class="buy__step buy__step--done">
+    <p class="buy__ok">Бронь создана</p>
+    <p class="buy__done-text"></p>
+    <button class="btn btn--ink buy__close" type="button">Готово</button>
+  </div>
+</dialog>
+<dialog class="buy buy--merch" aria-labelledby="mo-title">
+  <button class="buy__x" aria-label="Закрыть">✕</button>
+  <div class="buy__stub">
+    <p class="buy__kicker">Мерч Кубка МЦ</p>
+    <h2 id="mo-title" class="buy__title">Заказ футболки</h2>
+    <p class="buy__meta">Свяжемся, подтвердим размер и оплату</p>
+  </div>
+  <form class="buy__step buy__step--form" novalidate>
+    <fieldset class="mo__tees"></fieldset>
+    <fieldset class="mo__sizes"><legend>Размер</legend></fieldset>
+    <label class="fld"><span>Имя</span><input name="name" autocomplete="name" required></label>
+    <label class="fld"><span>Контакт для связи</span><input name="contact" required placeholder="Telegram, телефон или почта"></label>
+    <button class="btn btn--accent buy__go" type="submit">Оформить заказ</button>
+    <p class="buy__note">Демо-форма концепта: данные никуда не отправляются.</p>
+  </form>
+  <div class="buy__step buy__step--done">
+    <p class="buy__ok">Заказ принят</p>
+    <p class="buy__done-text"></p>
+    <button class="btn btn--ink buy__close" type="button">Готово</button>
+  </div>
+</dialog>
+<dialog class="drawer" aria-labelledby="dr-title">
+  <div class="drawer__top">
+    <div>
+      <h2 id="dr-title" class="drawer__title"></h2>
+      <p class="drawer__meta"></p>
+    </div>
+    <button class="drawer__x" aria-label="Закрыть">✕</button>
+  </div>
+  <div class="drawer__frame">
+    <div class="drawer__skel" aria-hidden="true"><i></i><i></i><i></i></div>
+    <iframe title="Покупка билета через Bibilet"></iframe>
+  </div>
+  <a class="drawer__out" target="_blank" rel="noopener">Открыть оплату в&nbsp;новой вкладке</a>
+</dialog>
+
+<script src="app.js?v=38" defer></script>
+</body>
+</html>

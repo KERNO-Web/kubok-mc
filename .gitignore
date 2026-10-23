@@ -1,0 +1,21 @@
+.DS_Store
+.playwright-mcp/
+
+# скрины проверок и временные файлы
+.work/zoom/
+.work/sctmp/
+.work/orgtmp/
+.work/brief/
+
+# скомпилированные swift-утилиты (исходники .swift лежат рядом)
+.work/bake
+.work/cutout
+.work/selcolor
+
+# сырые исходники фото от Сергея и организаторов (обработанные версии в assets/)
+HUNT/
+SVOBODA/
+BTB/
+refs/
+rap_photo_materials_all*/
+rap_photos_batch_2_all/
