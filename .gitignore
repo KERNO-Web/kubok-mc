@@ -19,3 +19,10 @@
 /refs/
 /rap_photo_materials_all*/
 /rap_photos_batch_2_all/
+
+# видео сравнения фильтров
+.work/fx/*.mp4
+.work/fx/*.webm
+.work/fx/rec/
+.work/fx/old/
+.work/fx/rec2/

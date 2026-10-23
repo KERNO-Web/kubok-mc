@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Фильтры: до / после</title>
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #0c0a09; color: #f1efe9; font: 500 15px/1.3 system-ui, sans-serif; height: 100vh; overflow: hidden; display: grid; grid-template-rows: auto 1fr; }
+  .bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px 14px; background: #161211; border-bottom: 1px solid #2c2522; }
+  .bar b { font: 700 20px/1 "Oswald", system-ui; text-transform: uppercase; margin-right: 10px; }
+  .bar button { padding: 8px 12px; border: 0; background: #2a2420; color: #f1efe9; font: 600 14px system-ui; cursor: pointer; }
+  .bar button.on { background: #e1141e; }
+  .cap { width: 100%; color: #c9c1b6; font-size: 14px; }
+  .panes { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; min-height: 0; }
+  .pane { position: relative; overflow: hidden; background: #000; }
+  .pane i { position: absolute; z-index: 2; top: 10px; left: 10px; padding: 6px 10px; background: rgba(0, 0, 0, .75); font: 700 15px system-ui; font-style: normal; text-transform: uppercase; letter-spacing: .05em; }
+  .pane:last-child i { background: #e1141e; }
+  iframe { position: absolute; left: 0; top: 0; width: 1440px; border: 0; transform-origin: 0 0; }
+  /* режим записи: крупная подпись варианта */
+  .auto .bar button { display: none; }
+  .auto .bar b { font-size: 30px; }
+  .auto .cap { font-size: 20px; color: #f1efe9; }
+</style>
+</head>
+<body>
+<div class="bar">
+  <b id="title">Как сейчас</b>
+  <button data-fx="1">1 Монохром</button>
+  <button data-fx="2">2 Зерно</button>
+  <button data-fx="3">3 Виньетка</button>
+  <button data-fx="4">4 Выцветшая плёнка</button>
+  <button data-fx="5">5 Пыль и царапины</button>
+  <button data-fx="6">6 Растр</button>
+  <button data-fx="7">7 Хром. аберрация</button>
+  <button data-fx="8">8 Грязный нуар</button>
+  <p class="cap" id="cap">Слева сайт как сейчас, справа с фильтром. Крути левую половину — правая едет следом.</p>
+</div>
+<div class="panes">
+  <div class="pane"><i>Сейчас</i><iframe id="L" src="../../index.html?cmp=L"></iframe></div>
+  <div class="pane"><i id="rlabel">Вариант</i><iframe id="R" src="../../index.html?cmp=R"></iframe></div>
+</div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"></svg>
+<script>
+const FX = {
+  1: ['Монохром', 'Все фото ч/б с повышенным контрастом — цвет остаётся только у красных плашек и кнопок.'],
+  2: ['Плёночное зерно', 'Крупное статичное зерно поверх всего сайта, как у фото на плёнку.'],
+  3: ['Виньетка', 'Края экрана темнеют, взгляд притягивается в центр кадра.'],
+  4: ['Выцветшая плёнка', 'Приглушённые тёплые цвета и поднятые тени, как у старых отпечатков.'],
+  5: ['Пыль и царапины', 'Поверх сайта царапины и пылинки, как на старой киноплёнке.'],
+  6: ['Растр', 'Точки печатного растра и жёсткий контраст, как у ксерокопии афиши.'],
+  7: ['Хроматическая аберрация', 'Красный и синий каналы у фото чуть разъехались, как на дешёвой оптике.'],
+  8: ['Грязный нуар', 'Комбо: монохром + зерно + виньетка + немного царапин.'],
+};
+const L = document.getElementById('L'), R = document.getElementById('R');
+const ready = Promise.all([L, R].map((f) => new Promise((ok) => f.addEventListener('load', ok, { once: true }))));
+// масштаб: сайт в 1440px ужимается в половину экрана
+const fit = () => document.querySelectorAll('.pane').forEach((p) => {
+  const f = p.querySelector('iframe'), k = p.clientWidth / 1440;
+  f.style.transform = `scale(${k})`; f.style.height = p.clientHeight / k + 'px';
+});
+addEventListener('resize', fit); fit();
+let fx = 0;
+const setFx = (n) => {
+  fx = n;
+  const d = R.contentDocument;
+  if (n) d.documentElement.dataset.fx = n; else delete d.documentElement.dataset.fx;
+  document.getElementById('title').textContent = n ? `Вариант ${n}: ${FX[n][0]}` : 'Как сейчас';
+  document.getElementById('rlabel').textContent = n ? `Вариант ${n}` : 'Вариант';
+  document.getElementById('cap').textContent = n ? FX[n][1] : 'Слева сайт как сейчас, справа с фильтром.';
+  document.querySelectorAll('.bar button').forEach((b) => b.classList.toggle('on', +b.dataset.fx === n));
+};
+ready.then(() => {
+  const d = R.contentDocument;
+  const link = d.createElement('link'); link.rel = 'stylesheet'; link.href = '.work/fx/fx.css?' + Date.now(); d.head.append(link);
+  // SVG-фильтр для хроматической аберрации
+  d.body.insertAdjacentHTML('beforeend', `<svg width="0" height="0" style="position:absolute"><filter id="fx-ca" color-interpolation-filters="sRGB">
+    <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r"/><feOffset in="r" dx="3" dy="0" result="r2"/>
+    <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="g"/>
+    <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="b"/><feOffset in="b" dx="-3" dy="0" result="b2"/>
+    <feBlend in="r2" in2="g" mode="screen" result="rg"/><feBlend in="rg" in2="b2" mode="screen"/></filter></svg>`);
+  // синхронная прокрутка: правая половина повторяет левую
+  L.contentWindow.addEventListener('scroll', () => R.contentWindow.scrollTo({ top: L.contentWindow.scrollY, behavior: 'instant' }), { passive: true });
+  // догрузка картинок справа может сдвинуть прокрутку — подравниваем постоянно
+  setInterval(() => { const y = L.contentWindow.scrollY; if (Math.abs(R.contentWindow.scrollY - y) > 1) R.contentWindow.scrollTo({ top: y, behavior: 'instant' }); }, 120);
+  R.contentDocument.documentElement.style.overflowAnchor = 'none'; L.contentDocument.documentElement.style.overflowAnchor = 'none';
+  document.querySelectorAll('.bar button').forEach((b) => b.addEventListener('click', () => setFx(+b.dataset.fx)));
+  setFx(+(new URLSearchParams(location.search).get('fx') || 1));
+  if (new URLSearchParams(location.search).has('auto')) auto();
+});
+// автопрогон для видео: каждый вариант — одинаковый проход по ключевым экранам
+const STOPS = [['.cover', 0], ['.ev-head', -40], ['.ev-grid', -60], ['.moments--hunt', -60], ['#svoboda .tiles', -140], ['.btb__head', -80], ['.orgs', -40], ['.merch-zone', -40]];
+const tween = (to, ms) => new Promise((ok) => {
+  const w = L.contentWindow, from = w.scrollY, t0 = performance.now();
+  const step = (t) => { const k = Math.min(1, (t - t0) / ms), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2; w.scrollTo({ top: from + (to - from) * e, behavior: 'instant' }); if (k < 1) requestAnimationFrame(step); else ok(); };
+  requestAnimationFrame(step);
+});
+const wait = (ms) => new Promise((ok) => setTimeout(ok, ms));
+async function auto() {
+  document.body.classList.add('auto');
+  await wait(2600);
+  for (let n = 1; n <= 8; n++) {
+    setFx(n);
+    L.contentWindow.scrollTo({ top: 0, behavior: 'instant' });
+    await wait(1700);
+    for (const [sel, off] of STOPS.slice(1)) {
+      const e = L.contentDocument.querySelector(sel);
+      await tween(e.getBoundingClientRect().top + L.contentWindow.scrollY + off, 800);
+      await wait(500);
+    }
+  }
+  window.__done = true;
+}
+</script>
+</body>
+</html>

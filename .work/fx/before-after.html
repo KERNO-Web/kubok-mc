@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Было / стало: фильтры сезонов</title>
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #000; overflow: hidden; height: 100vh; font: 700 26px/1.2 system-ui, sans-serif; color: #fff; }
+  iframe { position: absolute; inset: 0; width: 100vw; height: 100vh; border: 0; }
+  #N { opacity: 0; transition: opacity .45s ease; }
+  #N.on { opacity: 1; }
+  .lab { position: fixed; z-index: 5; left: 50%; bottom: 28px; translate: -50% 0; padding: 12px 22px; background: rgba(0, 0, 0, .82); letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+  .lab b { color: #e1141e; }
+  .lab small { display: block; margin-top: 4px; font: 500 17px system-ui; text-transform: none; letter-spacing: 0; color: #d6cfc4; }
+</style>
+</head>
+<body>
+<iframe id="O" src="old/index.html?ba=old"></iframe>
+<iframe id="N" src="../../index.html?ba=new"></iframe>
+<div class="lab" id="lab"></div>
+<script>
+const O = document.getElementById('O'), N = document.getElementById('N'), lab = document.getElementById('lab');
+const ready = Promise.all([O, N].map((f) => new Promise((ok) => f.addEventListener('load', ok, { once: true }))));
+const wait = (ms) => new Promise((ok) => setTimeout(ok, ms));
+const label = (state, what) => { lab.innerHTML = (state === 'new' ? '<b>Стало</b>' : 'Было') + (what ? `<small>${what}</small>` : ''); };
+const show = (state, what) => { N.classList.toggle('on', state === 'new'); label(state, what); };
+const to = (sel, off) => {
+  const y = O.contentDocument.querySelector(sel).getBoundingClientRect().top + O.contentWindow.scrollY + off;
+  for (const f of [O, N]) { f.contentDocument.documentElement.style.scrollBehavior = 'auto'; f.contentWindow.scrollTo({ top: y, behavior: 'instant' }); }
+};
+// каждая остановка: что показать и в каком порядке
+const STOPS = [
+  ['.ev-head', -40, 'HUNT: виньетка по краям экрана + редкие царапины на дереве', 'on'],
+  ['.ev-grid', -70, 'HUNT: царапины на бумажках и фото, у части элементов их нет', 'on'],
+  ['.moments--hunt', -60, 'HUNT: царапины на полароидах на разной глубине', 'on'],
+  ['.krug--hunt', -100, 'HUNT: фото с баттлов', 'on'],
+  ['#svoboda', 70, 'Св*бода: растр на стене и листе-афише (30%)', 'on'],
+  ['#svoboda .tiles', -60, 'Св*бода: растр на обложках (~15%)', 'on'],
+  ['.btb__head', -100, 'BTB: при появлении каналы разъезжаются и оседают', 'new-first'],
+  ['.btb .tiles', -80, 'BTB: слабая аберрация на обложках', 'on'],
+];
+ready.then(async () => {
+  await wait(2500);
+  for (const [sel, off, what, mode] of STOPS) {
+    if (mode === 'new-first') {
+      show('new', what); await wait(80); to(sel, off); await wait(2600);
+      show('old', what); await wait(1400);
+      show('new', what); await wait(1500);
+    } else {
+      show('old', what); to(sel, off); await wait(1500);
+      show('new', what); await wait(2200);
+    }
+  }
+  window.__done = true;
+});
+</script>
+</body>
+</html>

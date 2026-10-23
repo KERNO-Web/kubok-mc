@@ -1,0 +1,33 @@
+/* Варианты фильтров для сравнения (подключается только в правую половину compare.html, сайт не трогает) */
+:root {
+  --fx-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='1.8' intercept='-.4'/%3E%3CfeFuncG type='linear' slope='1.8' intercept='-.4'/%3E%3CfeFuncB type='linear' slope='1.8' intercept='-.4'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+/* все фото сайта */
+html[data-fx] :is(.cover__bg, .cover__fg, .pol img, .slide img, .moment__frame img, .krug__ph img, .tile img, .gone img, .bracket__list img, .org__ph, .ofr img, .eps img, .tee__img, .season__poster, .lw img) { transition: none !important; }
+
+/* 1. Монохром: все фото ч/б, контраст выше */
+html[data-fx="1"] :is(.cover__bg, .cover__fg, .pol img, .slide img, .moment__frame img, .krug__ph img, .tile img, .gone img, .bracket__list img, .org__ph, .ofr img, .eps img, .tee__img, .season__poster, .lw img) { filter: grayscale(1) contrast(1.18) !important; }
+
+/* 2. Плёночное зерно: крупное статичное зерно поверх всего */
+html[data-fx="2"]::after, html[data-fx="8"]::after { content: ""; position: fixed; inset: 0; z-index: 95; pointer-events: none; background: var(--fx-grain) 0 0 / 220px; opacity: .55; mix-blend-mode: overlay; }
+
+/* 3. Виньетка: края экрана темнеют, взгляд в центр */
+html[data-fx="3"]::before, html[data-fx="8"]::before { content: ""; position: fixed; inset: 0; z-index: 94; pointer-events: none; background: radial-gradient(115% 90% at 50% 45%, transparent 40%, rgba(0, 0, 0, .55) 75%, rgba(0, 0, 0, .85) 100%); }
+
+/* 4. Выцветшая плёнка: приглушённые цвета, тёплый оттенок, поднятые тени */
+html[data-fx="4"] :is(.cover__bg, .cover__fg, .pol img, .slide img, .moment__frame img, .krug__ph img, .tile img, .gone img, .bracket__list img, .org__ph, .ofr img, .eps img, .tee__img, .season__poster, .lw img) { filter: sepia(.3) saturate(.68) contrast(.86) brightness(1.06) !important; }
+html[data-fx="4"]::after { content: ""; position: fixed; inset: 0; z-index: 95; pointer-events: none; background: rgba(255, 214, 160, .06); mix-blend-mode: normal; }
+
+/* 5. Старая плёнка: пыль и царапины поверх */
+html[data-fx="5"]::after, html[data-fx="8"] body::before { content: ""; position: fixed; inset: 0; z-index: 96; pointer-events: none; background: url("scratch.svg") 0 0 / 600px; opacity: .85; }
+html[data-fx="8"] body::before { opacity: .5; }
+
+/* 6. Растр (ксерокс/печать): мелкие точки печатного растра поверх */
+html[data-fx="6"]::after { content: ""; position: fixed; inset: 0; z-index: 95; pointer-events: none; background: radial-gradient(rgba(0, 0, 0, .55) 32%, transparent 36%) 0 0 / 4px 4px; opacity: .35; }
+html[data-fx="6"] :is(.cover__bg, .cover__fg, .pol img, .slide img, .moment__frame img, .krug__ph img, .tile img, .org__ph, .ofr img, .eps img, .lw img) { filter: contrast(1.25) saturate(.85) !important; }
+
+/* 7. Хроматическая аберрация: красный и синий каналы чуть разъехались, как на дешёвой оптике */
+html[data-fx="7"] :is(.cover__bg, .pol img, .slide img, .moment__frame img, .krug__ph img, .tile img, .org__ph, .ofr img, .eps img, .tee__img, .season__poster) { filter: url("#fx-ca") !important; }
+
+/* 8. Грязный нуар: монохром + зерно + виньетка + немного царапин */
+html[data-fx="8"] :is(.cover__bg, .cover__fg, .pol img, .slide img, .moment__frame img, .krug__ph img, .tile img, .gone img, .bracket__list img, .org__ph, .ofr img, .eps img, .tee__img, .season__poster, .lw img) { filter: grayscale(1) contrast(1.25) brightness(.95) !important; }

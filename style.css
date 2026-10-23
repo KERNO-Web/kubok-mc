@@ -859,6 +859,39 @@ body::after, .cover::after, .event::after, .lower__bg::after, .org__stage::after
 .chip--sold:hover span { box-shadow: inset 0 0 0 2px #d8cfc0; }
 .hall path#hall-arc { stroke: none; }
 
+/* ============ v38 Фильтры сезонов (Сергей выбрал на стенде .work/fx/compare.html) ============ */
+/* HUNT — пыль и царапины на трёх глубинах: дерево (под всем), часть бумаги и фото (вразнобой), редкие поверх всего (только ПК) */
+.fx-wood, .fx-top { position: absolute; inset: 0; pointer-events: none; }
+.fx-wood { z-index: -1; background: url("assets/fx/scratch-wood.svg") 0 0 / 1100px; }
+.fx-top { z-index: 6; background: url("assets/fx/scratch-top.svg") 300px 200px / 1500px; opacity: .8; }
+.pol::after, .moments--hunt .moment::after, .krug--hunt .krug__ph::after, .bracket__list li::after, .extra__view::after, .ev-head__date::after, .tag::after { content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; background: url("assets/fx/scratch-paper.svg") 0 0 / 620px; }
+.bracket__list li, .tag { position: relative; }
+/* вразнобой: у разных элементов разные куски царапин, у части их нет совсем */
+.moments--hunt .moment:nth-child(2n)::after, .krug--hunt .krug__ph:nth-child(3n + 1)::after { background-position: -230px -140px; }
+.moments--hunt .moment:nth-child(3n)::after, .krug--hunt .krug__ph:nth-child(4n)::after, .bracket__list li:nth-child(2n)::after { background-position: -410px -360px; }
+.moments--hunt .moment:nth-child(4)::after, .krug--hunt .krug__ph:nth-child(5n + 2)::after, .bracket__list li:nth-child(3)::after, .tag:nth-of-type(2n)::after, .pol--c::after { content: none; }
+.extra__view::after { background-position: -120px -300px; }
+/* HUNT — виньетка по краям экрана, пока HUNT в кадре */
+.fx-vig { position: fixed; inset: 0; z-index: 40; pointer-events: none; opacity: 0; transition: opacity .7s ease; background: radial-gradient(115% 90% at 50% 45%, transparent 42%, rgba(0, 0, 0, .5) 76%, rgba(0, 0, 0, .8) 100%); }
+.fx-vig.on { opacity: 1; }
+.fx-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* Св*бода — растр печати: фон и лист-афиша 30% силы варианта со стенда, фото ~15% */
+.sv { --dots: radial-gradient(rgba(0, 0, 0, .55) 32%, transparent 36%) 0 0 / 4px 4px; }
+.sv > .fx-dots { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: var(--dots); opacity: .105; }
+.sv__left, .sv .tile, .moments--svoboda .moment { position: relative; }
+.sv__left::after, .sv .tile::after, .moments--svoboda .moment::after, .krug--svoboda .krug__ph::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: var(--dots); opacity: .055; }
+.sv__left::after { opacity: .105; }
+.sv .tile::after { bottom: auto; aspect-ratio: 16 / 9; }
+.sv .tile img, .moments--svoboda .moment__frame img, .krug--svoboda .krug__ph img { filter: contrast(1.04) saturate(.97); }
+
+/* BTB — хроматическая аберрация (смещение каналов анимирует app.js) */
+.btb__title img { filter: url("#ca-title") drop-shadow(0 14px 28px rgba(0, 0, 0, .75)); }
+.btb .season__poster { filter: url("#ca-poster"); }
+.btb .tile img { filter: url("#ca-tiles"); }
+.moments--btb .moment__frame img { filter: url("#ca-moments") contrast(1.08) saturate(.9); }
+.krug--btb .krug__ph img { filter: url("#ca-krug"); }
+
 /* ============ v35 Мобилка по аудиту (docs/AUDIT_MOBILE.md). Блок последний — поздние правила для ПК его не перебивают ============ */
 
 /* Main Event: стрелки по центру кадра на любой ширине (cqw = ширина кадра внутри рамки) */
@@ -956,4 +989,10 @@ html.menu-open { overflow: hidden; }
   .org.is-color .org__ph--b { opacity: 1; }
   .ofr.is-color img, .ofr.is-color:hover img { filter: none; }
   .ofr.is-color::after, .ofr.is-color:hover::after { box-shadow: inset 0 0 0 3px var(--accent); }
+}
+
+/* v38 на тач-экранах: ничего поверх лент HUNT (виньетка и верхние царапины только на ПК), виньетка — на самих фото */
+@media (hover: none) {
+  .fx-vig, .fx-top { display: none; }
+  .pol::after, .moments--hunt .moment::after, .krug--hunt .krug__ph::after { background: url("assets/fx/scratch-paper.svg") 0 0 / 620px, radial-gradient(120% 110% at 50% 45%, transparent 50%, rgba(20, 10, 4, .45) 100%); }
 }

@@ -451,3 +451,29 @@ demoForm(mo, (f) => `${f.get("name")}, футболка «${f.get("tee")}», р�
 
 // Main Event: «vs» в подписи пары — красным
 $$(".slide figcaption b").forEach((b) => { b.innerHTML = b.textContent.replace(/ vs /i, " <i>vs</i> "); });
+
+// v38 Фильтры сезонов. HUNT: виньетка по краям экрана, пока HUNT в кадре (только ПК)
+{
+  const vig = $(".fx-vig"), ev = $("#event");
+  if (vig && ev) new IntersectionObserver(([e]) => vig.classList.toggle("on", e.isIntersecting && e.intersectionRatio > .12), { threshold: [0, .12, .3] }).observe(ev);
+}
+// BTB: хроматическая аберрация — при появлении блока каналы разъехались и оседают до едва заметной (на телефоне сразу слабая)
+{
+  const groups = { title: ".btb__title", poster: ".btb .season__poster", tiles: ".btb .tiles", moments: ".moments--btb", krug: ".krug--btb" };
+  const animate = !touchUI.matches && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const setDx = (id, dx) => { const offs = document.querySelectorAll(`#ca-${id} feOffset`); offs[0].setAttribute("dx", dx.toFixed(2)); offs[1].setAttribute("dx", (-dx).toFixed(2)); };
+  Object.entries(groups).forEach(([id, sel]) => {
+    const el = $(sel);
+    if (!el) return;
+    if (!animate) { setDx(id, .9); return; }
+    setDx(id, 8);
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      const t0 = performance.now(), D = 1300;
+      const step = (t) => { const k = Math.min(1, (t - t0) / D), ease = 1 - Math.pow(1 - k, 3); setDx(id, 8 - (8 - 1.2) * ease); if (k < 1) requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    }, { threshold: .25 });
+    io.observe(el);
+  });
+}
