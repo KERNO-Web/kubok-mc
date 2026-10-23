@@ -185,7 +185,7 @@ const stringUp = (box, rowSel, cardSel) => {
     const host = getComputedStyle(row).display === "contents" ? box : row;
     if (layer.parentElement !== host) host.append(layer);
     const hr = host.getBoundingClientRect();
-    const pts = $$(cardSel, box).map((el) => {
+    const pts = $$(cardSel, box).filter((el) => el.offsetParent).map((el) => {  // спрятанные карточки не связываем
       const r = el.getBoundingClientRect();
       return [r.left + r.width / 2 - hr.left + host.scrollLeft, r.top - hr.top + host.scrollTop + 7];
     });
@@ -414,3 +414,29 @@ $$(".tee").forEach((t, i) => $(".tee__order", t).addEventListener("click", () =>
 }));
 demoForm(mo, (f) => `${f.get("name")}, футболка «${f.get("tee")}», размер ${f.get("size")}. Напишем вам: ${f.get("contact")}.`);
 
+
+// Меню на телефоне: бургер раскрывает навигацию на весь экран
+{
+  const mast = $(".mast"), burger = $(".mast__burger");
+  const setMenu = (open) => {
+    mast.classList.toggle("is-open", open);
+    burger.setAttribute("aria-expanded", String(open));
+    document.documentElement.classList.toggle("menu-open", open);
+  };
+  burger.addEventListener("click", () => setMenu(!mast.classList.contains("is-open")));
+  $$(".mast__nav a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
+  addEventListener("keydown", (e) => { if (e.key === "Escape") setMenu(false); });
+  matchMedia("(min-width: 768px)").addEventListener("change", (e) => { if (e.matches) setMenu(false); });
+}
+
+// Просмотр фото: свайп пальцем листает
+{
+  let sx = null;
+  lb.addEventListener("touchstart", (e) => { sx = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener("touchend", (e) => {
+    if (sx === null) return;
+    const dx = e.changedTouches[0].clientX - sx;
+    sx = null;
+    if (Math.abs(dx) > 50) lbShow(lbIdx + (dx < 0 ? 1 : -1));
+  });
+}

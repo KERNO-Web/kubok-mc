@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Onest:wght@400;500;700&family=Roboto+Slab:wght@900&family=Anton&family=Dela+Gothic+One&family=Archivo:wdth,wght@62,900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=67">
+<link rel="stylesheet" href="style.css?v=69">
 <link rel="preload" as="image" href="assets/bw/ph-4.jpg">
 </head>
 <body>
@@ -19,7 +19,7 @@
 
 <header class="mast">
   <a href="#top" class="mast__logo" aria-label="Кубок МЦ, наверх"><img src="assets/logo.svg" alt="" width="54" height="44"></a>
-  <nav class="mast__nav" aria-label="Разделы">
+  <nav class="mast__nav" id="mnav" aria-label="Разделы">
     <a href="#event">HUNT</a>
     <a href="#svoboda">Св*бода</a>
     <a href="#btb">Back to Basics</a>
@@ -29,6 +29,7 @@
     <a href="#contacts">Контакты</a>
   </nav>
   <button class="mast__cta" data-ticket="quarter">Билеты</button>
+  <button class="mast__burger" type="button" aria-label="Меню" aria-expanded="false" aria-controls="mnav"><i></i><i></i></button>
 </header>
 
 <main id="top">
@@ -340,6 +341,6 @@
   <a class="drawer__out" target="_blank" rel="noopener">Открыть оплату в&nbsp;новой вкладке</a>
 </dialog>
 
-<script src="app.js?v=38" defer></script>
+<script src="app.js?v=40" defer></script>
 </body>
 </html>
