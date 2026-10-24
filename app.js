@@ -51,7 +51,7 @@ const STAGES = [
     ["HwuMpB11GMY", "Энвими vs Doctor Kapustu!"],
     ["NEY-wCkF81w", "Нокту vs Кулакофф"],
     ["5uMRfEdG6ug", "Smoke [PlanB] vs Eeugene Speed"],
-  ]],
+  ], "BPM · 2 раунда"],
   ["1/4", "Видео скоро появятся"],
   ["1/2", "Ивент ещё не начался"],
   ["Финал", "Ивент ещё не начался"],
@@ -146,14 +146,14 @@ document.addEventListener("click", (e) => {
 $$(".vbox--season").forEach((box) => playerUp(box, SEASONS[box.dataset.season].map(([id, kind, t]) => [id, t, kind])));
 
 const showStage = (i) => {
-  const [name, v] = STAGES[i];
+  const [name, v, kind] = STAGES[i];
   $$(".stage", stageTabs).forEach((b, j) => b.setAttribute("aria-selected", String(j === i)));
   stagePanel.setAttribute("aria-label", name === "Финал" ? name : `${name} финала`);
   if (typeof v === "string") {
     VP.delete(stagePanel);
     stagePanel.classList.remove("vbox");
     stagePanel.innerHTML = `<p class="stage-panel__empty"><b>${v}</b></p>`;
-  } else playerUp(stagePanel, v);
+  } else playerUp(stagePanel, v.map(([id, t, k]) => [id, t, k || kind]));
 };
 stageTabs.addEventListener("click", (e) => {
   const b = e.target.closest(".stage");

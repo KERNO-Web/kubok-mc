@@ -988,6 +988,7 @@ body::after, .cover::after, .event::after, .lower__bg::after, .org__stage::after
 .archive .vp__n { font: 900 15px/1 var(--slab); color: var(--ink-red); }
 .archive .vp__t b { font: 900 clamp(19px, 1.8vw, 28px)/1.05 var(--slab); }
 .archive .vp__t i { color: var(--ink-red); }
+.archive .vp__t b small, .archive .eps--side .t small { color: var(--ink-red); }
 .archive .vp__nav button { background: #1b1614; color: #e8dcc0; }
 .archive .vp__nav button:hover { background: var(--ink-red); }
 .archive .vp__t a { font: 900 13px/1 var(--slab); color: var(--ink-red-d); }
