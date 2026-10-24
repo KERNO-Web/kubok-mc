@@ -122,7 +122,7 @@ const playerUp = (host, eps) => {
   VP.set(host, eps);
   host.classList.add("vbox");
   host.innerHTML = `<div class="vp"><div class="vp__screen"></div><p class="vp__t"></p>
-  <div class="vp__chan"><img src="assets/logo.svg" alt="" width="336" height="271"><p><b>Кубок МЦ</b><span>422 тыс. подписчиков</span></p>
+  <div class="vp__chan"><img src="assets/kbkmc-ava.webp" alt="" width="160" height="160"><p><b>Кубок МЦ</b><span>422 тыс. подписчиков</span></p>
     <a href="https://www.youtube.com/@kbkmc?sub_confirmation=1" target="_blank" rel="noopener">Подписаться</a></div></div>
   <ol class="eps eps--side">${eps.map(([id, t, kind], k) => `
   <li><button type="button" data-ep="${k}">
