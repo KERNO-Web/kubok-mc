@@ -127,7 +127,7 @@ const playerUp = (host, eps) => {
   <ol class="eps eps--side">${eps.map(([id, t, kind], k) => `
   <li><button type="button" data-ep="${k}">
     <span class="n">${String(k + 1).padStart(2, "0")}</span>
-    <img src="assets/yt/${id}.jpg" alt="" width="1280" height="720" loading="lazy">
+    <img src="assets/yt/s/${id}.jpg" alt="" width="400" height="225" loading="lazy">
     <span class="t">${kind ? `<small>${kind}</small>` : ""}${vsFor(t, kind)}</span>
   </button></li>`).join("")}</ol>`;
   vpPick(host, 0, false);
@@ -240,9 +240,11 @@ $$("[data-krug]").forEach((box) => {
   const at = () => { const x = row.scrollLeft + 4; let i = 0; items.forEach((el, k) => { if (el.offsetLeft - row.offsetLeft <= x) i = k; }); return i; };
   // в конце ленты видно несколько последних фото сразу, левое из них не последнее — показываем максимум
   const atEnd = () => row.scrollLeft >= row.scrollWidth - row.clientWidth - 4;
-  const upd = () => { count.textContent = `${String(atEnd() ? items.length : at() + 1).padStart(2, "0")} / ${items.length}`; };
+  // счётчик ленты (у доски свой, его ставит boardUp); пересчёт и когда фото догрузились — до этого лента пустая и казалось, что мы в конце («20 / 20»)
+  const upd = () => { if (box.classList.contains("is-board")) return; count.textContent = `${String(atEnd() ? items.length : at() + 1).padStart(2, "0")} / ${items.length}`; };
   upd();
   row.addEventListener("scroll", upd, { passive: true });
+  if (!krugBoard) { const ro = new ResizeObserver(upd); items.forEach((el) => ro.observe(el)); }
   $$(".krug__nav", box).forEach((b) => b.addEventListener("click", () => {
     if (box.classList.contains("is-board")) return;
     const i = Math.max(0, Math.min(items.length - 1, at() + Number(b.dataset.dir)));
@@ -394,7 +396,8 @@ const boardUp = (box, redraw) => {
       b.classList.add("is-on");
       const cv = await sprayIn(b, src(i));
       put(b, i);
-      await pre.decode().catch(() => {});
+      // холст убираем, когда новое фото уже раскодировано в самом img, иначе на телефоне мигает пустая рамка
+      await img.decode().catch(() => {});
       cv.remove();
       b.classList.remove("is-on");
       return;
@@ -436,13 +439,14 @@ const boardUp = (box, redraw) => {
     }
   };
   $$(".krug__nav", box).forEach((b) => b.addEventListener("click", () => go(Number(b.dataset.dir))));
-  let tx = null;
-  row.addEventListener("touchstart", (e) => { tx = e.touches[0].clientX; }, { passive: true });
+  // свайп вбок листает; если палец шёл больше вниз/вверх — это прокрутка сайта, фото не трогаем
+  let tx = null, ty = 0;
+  row.addEventListener("touchstart", (e) => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
   row.addEventListener("touchend", (e) => {
     if (tx === null) return;
-    const dx = e.changedTouches[0].clientX - tx;
+    const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
     tx = null;
-    if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.2) go(dx < 0 ? 1 : -1);
   }, { passive: true });
   row.addEventListener("keydown", (e) => { if (e.key === "ArrowRight") go(1); if (e.key === "ArrowLeft") go(-1); });
   fit();
@@ -685,14 +689,14 @@ demoForm(mo, (f) => `${f.get("name")}, футболка «${f.get("tee")}», р�
 
 // Просмотр фото: свайп пальцем листает
 {
-  let sx = null;
-  lb.addEventListener("touchstart", (e) => { sx = e.touches[0].clientX; }, { passive: true });
+  let sx = null, sy = 0;
+  lb.addEventListener("touchstart", (e) => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
   lb.addEventListener("touchend", (e) => {
     if (sx === null) return;
-    const dx = e.changedTouches[0].clientX - sx;
+    const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
     sx = null;
-    if (Math.abs(dx) > 50) lbShow(lbIdx + (dx < 0 ? 1 : -1));
-  });
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) lbShow(lbIdx + (dx < 0 ? 1 : -1));
+  }, { passive: true });
 }
 
 // Main Event: «vs» в подписи пары — красным

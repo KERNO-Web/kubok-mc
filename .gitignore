@@ -29,3 +29,9 @@
 
 # переписка с оргами — только локально
 /docs/OUTREACH.md
+
+# аудит: скрины и промежуточные картинки (скрипты .work/audit/*.mjs|py коммитятся)
+.work/audit/shots/
+.work/audit/*.png
+.work/audit/*.webp
+.work/audit/style-before.css

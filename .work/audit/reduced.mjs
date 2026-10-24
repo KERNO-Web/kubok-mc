@@ -1,0 +1,20 @@
+// iPhone с «Уменьшить движение»: ошибки, лента фото вместо доски, счётчик при прокрутке ленты
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const pw = require("/Users/sergey-mac/.npm/_npx/e41f203b7505f1fb/node_modules/playwright-core");
+const b = await pw.webkit.launch();
+const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true, reducedMotion: "reduce" });
+const p = await ctx.newPage();
+const errs = [];
+p.on("pageerror", (e) => errs.push(e.message));
+await p.goto("http://localhost:5201/", { waitUntil: "load" });
+const row = p.locator('[data-krug="hunt"] .krug__row');
+await row.scrollIntoViewIfNeeded();
+await p.waitForTimeout(800);
+const r1 = await p.evaluate(() => { const r = document.querySelector('[data-krug="hunt"] .krug__row'); return [getComputedStyle(r).overflowX, r.scrollWidth, r.clientWidth, document.querySelector('[data-krug="hunt"] .krug__count').textContent, document.querySelector('[data-krug="hunt"]').classList.contains("is-board")]; });
+await p.evaluate(() => { const r = document.querySelector('[data-krug="hunt"] .krug__row'); r.scrollLeft = 900; });
+await p.waitForTimeout(800);
+const r2 = await p.evaluate(() => document.querySelector('[data-krug="hunt"] .krug__count').textContent);
+await p.screenshot({ path: "/Users/sergey-mac/Vibecode/kubok-mc/.work/audit/shots/r-krug.png", scale: "css" });
+console.log(JSON.stringify({ r1, r2, errs }));
+await b.close();

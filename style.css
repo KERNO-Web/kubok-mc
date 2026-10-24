@@ -9,8 +9,8 @@
   --dirt: "Rubik Dirt", "Oswald", sans-serif;
   --gutter: clamp(16px, 3.4vw, 56px);
   --ease: cubic-bezier(.16, 1, .3, 1);
-  --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .16 0 0 0 0 .12 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  --speck: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.6 -.92'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E");
+  --noise: -webkit-image-set(url("assets/fx/noise-2x.webp") 2x, url("assets/fx/noise-3x.webp") 3x);
+  --speck: -webkit-image-set(url("assets/fx/speck-2x.webp") 2x, url("assets/fx/speck-3x.webp") 3x);
   --torn: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 100' preserveAspectRatio='none'%3E%3Cpolygon points='0,3.6 22,1.2 43,5.2 65,0.6 87,4.3 109,2.9 130,0.5 152,4.1 174,0.3 196,3.5 217,0.6 239,0.7 261,3.4 283,6.6 304,1.0 326,1.8 348,5.0 370,7.6 391,4.6 413,3.2 435,7.8 457,0.4 478,6.9 500,2.3 522,1.2 543,0.9 565,2.5 587,6.5 609,1.4 630,4.7 652,5.1 674,3.0 696,4.4 717,0.5 739,0.5 761,1.6 783,5.4 804,3.4 826,2.5 848,4.7 870,3.6 891,2.4 913,6.4 935,5.6 957,2.0 978,4.6 1000,4.6 1000,97.3 978,97.3 957,92.9 935,99.8 913,91.2 891,94.2 870,97.6 848,91.5 826,94.9 804,90.4 783,96.7 761,97.6 739,95.7 717,98.8 696,93.1 674,97.0 652,95.9 630,95.8 609,94.6 587,98.4 565,99.4 543,94.7 522,96.6 500,90.6 478,97.0 457,96.5 435,99.9 413,98.2 391,92.8 370,93.9 348,96.7 326,90.2 304,94.6 283,91.7 261,91.2 239,90.6 217,97.7 196,91.3 174,92.5 152,93.9 130,98.7 109,90.8 87,94.5 65,95.5 43,98.8 22,98.2 0,97.2'/%3E%3C/svg%3E");
   --torn2: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 100' preserveAspectRatio='none'%3E%3Cpolygon points='0,3.4 33,3.3 67,2.9 100,7.1 133,7.7 167,1.2 200,1.4 233,1.9 267,1.9 300,3.9 333,4.7 367,2.1 400,0.0 433,3.4 467,3.0 500,4.5 533,7.6 567,5.5 600,4.1 633,4.9 667,5.4 700,0.4 733,7.2 767,6.2 800,7.0 833,6.4 867,3.1 900,3.2 933,0.8 967,5.1 1000,2.3 1000,92.4 967,92.1 933,91.6 900,93.4 867,90.5 833,90.0 800,91.5 767,91.0 733,93.6 700,90.3 667,98.7 633,96.1 600,91.5 567,92.5 533,93.5 500,93.6 467,91.2 433,98.5 400,99.9 367,94.7 333,94.8 300,90.9 267,91.0 233,93.4 200,92.6 167,98.3 133,91.6 100,90.2 67,99.5 33,95.3 0,92.9'/%3E%3C/svg%3E");
   color-scheme: dark;
@@ -1279,3 +1279,20 @@ html.menu-open { overflow: hidden; }
   .krug.is-board .krug__h { flex: 1 1 auto; min-width: 0; }
   .extra__nav--big { --aw: 18px; }
 }
+
+/* v95 Производительность на телефонах (Сергей: на фото подлагивало и не листалось).
+   Зерно двигается сдвигом слоя (transform), а не background-position: раньше слои зерна во весь экран и во весь HUNT
+   перерисовывались 5 раз в секунду. Слой на 64px больше своего места, чтобы при сдвиге (до 61px) края не открывались.
+   Шум и зерно — готовые плитки assets/fx/*.webp (раньше SVG feTurbulence, Safari пересчитывал его при каждой отрисовке). */
+body::after, .cover::after, .event::after { inset: -64px; }
+@keyframes grain { 0% { transform: none; } 20% { transform: translate(-37px, 21px); } 40% { transform: translate(53px, -44px); } 60% { transform: translate(-12px, 61px); } 80% { transform: translate(29px, 9px); } }
+/* BTB: смена фото без перерисовки самого фото (на нём SVG-фильтр аберрации): призрак гаснет на своём слое, помехи — на своём */
+.krug__ghost { will-change: opacity; }
+.krug--btb .krug__ph::after { will-change: transform; }
+/* Открытый просмотр фото или попап на телефоне: страница под ним не уезжает */
+@media (hover: none) { html:has(dialog[open]) { overflow: hidden; } }
+.lb__img:focus { outline: none; }
+/* Футер на ноутбуках 1280–1599: соцсети 2×2, а не 3 + одинокий Boosty во втором ряду */
+@media (min-width: 1280px) and (max-width: 1599px) { .final__links { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* Счётчик фото не переносится на две строки (в ленте при «Уменьшить движение» стрелок нет и ему было тесно) */
+.krug__count { white-space: nowrap; flex: none; }
