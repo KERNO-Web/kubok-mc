@@ -1072,6 +1072,15 @@ body::after, .cover::after, .event::after, .lower__bg::after, .org__stage::after
 @media (max-width: 767px) { .extra__view .slide figcaption b.nicks { font-size: 19px; } }
 .vp__t b small, .eps--side .t small { font-family: var(--mono) !important; font-weight: 600 !important; letter-spacing: .14em !important; }
 
+/* v88 Категории: у перестрелки вместо «vs» скрещённые револьверы (вырезаны с их обложки, assets/pistols.png — маска,
+   цвет = цвет vs в этом месте); над парами 1/4 формат «Перестр*лка», у Main Event — «Classic BPM» */
+.guns { display: inline-block; width: 1.75em; height: 1.6em; vertical-align: middle; background: currentColor; -webkit-mask: url("assets/pistols.png") center / contain no-repeat; mask: url("assets/pistols.png") center / contain no-repeat; }
+.bracket__list .guns { width: 46px; height: 42px; }
+.vp__t .guns { width: 1.6em; height: 1.35em; margin: 0 .1em; }
+.eps--side .t .guns { width: 1.7em; height: 1.4em; margin: -.2em .1em; }
+.bracket__fmt { margin: -2px 0 14px 4px; color: #e8dcc0; text-shadow: 0 2px 8px rgba(0, 0, 0, .8); }
+@media (max-width: 767px) { .bracket__list .guns { width: 34px; height: 31px; } }
+
 /* ============ v35 Мобилка по аудиту (docs/AUDIT_MOBILE.md). Блок последний — поздние правила для ПК его не перебивают ============ */
 
 /* Main Event: стрелки по центру кадра на любой ширине (cqw = ширина кадра внутри рамки) */

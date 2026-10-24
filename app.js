@@ -63,11 +63,14 @@ const TICKETS = {
 };
 
 const $ = (s, r = document) => r.querySelector(s);
+// «vs» по формату: у перестрелки вместо vs скрещённые револьверы (как на их обложках), цвет берут от vs
+const GUNS = `<i class="guns" title="Перестр*лка"><span class="sr-only">vs</span></i>`;
+const vsFor = (t, kind) => t.replace(" vs ", kind && /перестр/i.test(kind) ? ` ${GUNS} ` : " <i>vs</i> ");
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const yt = (id) => `https://www.youtube.com/watch?v=${id}`;
 
 $(".bracket__list").innerHTML = BRACKET.map(([fa, a, fb, b]) => `
-  <li><img src="assets/${fa}.jpg" alt="" width="56" height="56" loading="lazy"><b>${a}</b><i>vs</i><b>${b}</b><img src="assets/${fb}.jpg" alt="" width="56" height="56" loading="lazy"></li>`).join("");
+  <li><img src="assets/${fa}.jpg" alt="" width="56" height="56" loading="lazy"><b>${a}</b>${GUNS}<b>${b}</b><img src="assets/${fb}.jpg" alt="" width="56" height="56" loading="lazy"></li>`).join("");
 $(".gone").innerHTML = GONE.map(([f, n]) => `
   <figure><img src="assets/${f}.jpg" alt="${n}" width="138" height="138" loading="lazy"><figcaption>${n}</figcaption></figure>`).join("");
 
@@ -101,7 +104,7 @@ const vpPick = (host, k, play) => {
   const eps = VP.get(host);
   const [id, t, kind] = eps[k];
   const pad = (n) => String(n).padStart(2, "0");
-  const pair = t.replace(" vs ", " <i>vs</i> ");
+  const pair = vsFor(t, kind);
   host.dataset.ep = k;
   $$(".eps--side button", host).forEach((b) => {
     const on = Number(b.dataset.ep) === k;
@@ -124,7 +127,7 @@ const playerUp = (host, eps) => {
   <li><button type="button" data-ep="${k}">
     <span class="n">${String(k + 1).padStart(2, "0")}</span>
     <img src="assets/yt/${id}.jpg" alt="" width="1280" height="720" loading="lazy">
-    <span class="t">${kind ? `<small>${kind}</small>` : ""}${t.replace(" vs ", " <i>vs</i> ")}</span>
+    <span class="t">${kind ? `<small>${kind}</small>` : ""}${vsFor(t, kind)}</span>
   </button></li>`).join("")}</ol>`;
   vpPick(host, 0, false);
 };
