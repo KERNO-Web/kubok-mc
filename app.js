@@ -174,7 +174,9 @@ $$("[data-krug]").forEach((box) => {
   const count = $(".krug__count", box);
   const items = $$(".krug__ph", row);
   const at = () => { const x = row.scrollLeft + 4; let i = 0; items.forEach((el, k) => { if (el.offsetLeft - row.offsetLeft <= x) i = k; }); return i; };
-  const upd = () => { count.textContent = `${String(at() + 1).padStart(2, "0")} / ${items.length}`; };
+  // в конце ленты видно несколько последних фото сразу, левое из них не последнее — показываем максимум
+  const atEnd = () => row.scrollLeft >= row.scrollWidth - row.clientWidth - 4;
+  const upd = () => { count.textContent = `${String(atEnd() ? items.length : at() + 1).padStart(2, "0")} / ${items.length}`; };
   upd();
   row.addEventListener("scroll", upd, { passive: true });
   $$(".krug__nav", box).forEach((b) => b.addEventListener("click", () => {
