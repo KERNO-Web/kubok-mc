@@ -1006,3 +1006,21 @@ html.menu-open { overflow: hidden; }
   .pol::after, .moments--hunt .moment::after, .krug--hunt .krug__ph::after { background: url("assets/fx/scratch-paper.svg") 0 0 / 620px, radial-gradient(120% 110% at 50% 45%, transparent 50%, rgba(20, 10, 4, .45) 100%); }
 }
 @media (hover: none) { .moment { transform: none; } }
+
+/* v78 Архив переехал в HUNT: «Видео с турнира» под сеткой пар, вкладки по стадиям; без отдельной зоны орги сразу переходят в мерч */
+.event .archive { margin: 0 max(var(--gutter), calc((100% - 1440px) / 2)) clamp(60px, 6vw, 90px); }
+.stages { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+.stage { padding: 11px 20px 9px; border: 2px solid #1b1614; background: transparent; color: #1b1614; font: 900 clamp(16px, 1.4vw, 21px)/1 var(--slab); text-transform: uppercase; cursor: pointer; transition: background .2s, color .2s; }
+.stage:hover { background: rgba(27, 22, 20, .08); }
+.stage[data-empty] { border-style: dashed; color: rgba(27, 22, 20, .6); }
+.stage[aria-selected="true"] { border: 2px solid #6c0d10; background: #6c0d10; color: #e9e0ca; box-shadow: inset 0 0 0 2px #e9e0ca; }
+.stage:focus-visible { outline: 2px solid #6c0d10; outline-offset: 3px; }
+.stage-panel__empty { display: grid; place-content: center; justify-items: center; gap: 14px; min-height: clamp(220px, 24vw, 330px); border-top: 2px dashed rgba(27, 22, 20, .45); text-align: center; }
+.stage-panel__empty b { padding: 12px 22px 10px; border: 3px solid #6c0d10; color: #6c0d10; font: 900 clamp(24px, 2.6vw, 40px)/1.05 var(--slab); text-transform: uppercase; rotate: -3deg; }
+.merch-zone { background: linear-gradient(rgba(12, 10, 9, .55), rgba(228, 222, 211, 0) 14px), radial-gradient(70% 90% at 80% 20%, rgba(255, 255, 255, .45), transparent 60%), var(--noise), #e4ded3; }
+@media (max-width: 767px) {
+  .stages { gap: 8px; }
+  .stage { flex: 1 1 auto; padding: 10px 12px 8px; }
+  .event .archive__head { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .stage-panel__empty b { max-width: 90%; }
+}

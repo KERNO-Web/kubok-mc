@@ -40,15 +40,21 @@ const MOMENTS = {
 // Фото из круга по ивентам: [файл, ширина, высота], лучшие первыми (assets/krug/<ивент>/)
 const KRUG = {"hunt":[["01",1280,853],["02",1280,854],["03",1280,854],["04",1280,853],["05",1280,854],["06",1280,853],["07",1280,853],["08",1280,854],["09",1280,853],["10",1280,854],["11",1280,1280],["12",1280,854],["13",1280,853],["14",1280,853],["15",1280,854],["16",1280,853],["17",1280,853],["18",1280,853],["19",1280,854],["20",1280,854]],"svoboda":[["01",1280,853],["02",1280,853],["03",1280,853],["04",1280,853],["05",1280,1280],["06",1280,853],["07",1280,853],["08",1280,853],["09",1280,853],["10",1280,853],["11",1280,853],["12",1280,853],["13",1280,853],["14",1280,853],["15",1280,853],["16",1280,853],["17",1280,853],["18",1280,853],["19",1280,853],["20",1280,853]],"btb":[["01",1280,853],["02",1280,853],["03",1280,853],["04",1280,853],["05",1280,853],["06",1280,853],["07",1280,853],["08",1280,853],["09",1280,853],["10",1280,853],["11",1280,853],["12",1280,853],["13",1280,853],["14",1280,853],["15",1280,853],["16",1280,853],["17",1280,853],["18",1280,853],["19",1280,853]]};
 
-const ARCHIVE = [
-  ["yFk37WqensU", "Body vs Killhomie", "HUNT, 1/8"],
-  ["TgrQ0N43CiU", "Бач vs Shala", "HUNT, 1/8"],
-  ["aAMWJh7chgE", "Микси vs Кукиш с Хаслом", "HUNT, 1/8"],
-  ["XiNIxZdJs6w", "Verch.Fate vs Zeiman", "HUNT, 1/8"],
-  ["yZyyW1XLNuM", "Ирен vs El Mad", "HUNT, 1/8"],
-  ["HwuMpB11GMY", "Энвими vs Doctor Kapustu!", "HUNT, 1/8"],
-  ["NEY-wCkF81w", "Нокту vs Кулакофф", "HUNT, 1/8"],
-  ["5uMRfEdG6ug", "Smoke [PlanB] vs Eeugene Speed", "HUNT, 1/8"],
+// Видео с турнира HUNT по стадиям: список роликов или текст-заглушка
+const STAGES = [
+  ["1/8", [
+    ["yFk37WqensU", "Body vs Killhomie"],
+    ["TgrQ0N43CiU", "Бач vs Shala"],
+    ["aAMWJh7chgE", "Микси vs Кукиш с Хаслом"],
+    ["XiNIxZdJs6w", "Verch.Fate vs Zeiman"],
+    ["yZyyW1XLNuM", "Ирен vs El Mad"],
+    ["HwuMpB11GMY", "Энвими vs Doctor Kapustu!"],
+    ["NEY-wCkF81w", "Нокту vs Кулакофф"],
+    ["5uMRfEdG6ug", "Smoke [PlanB] vs Eeugene Speed"],
+  ]],
+  ["1/4", "Видео скоро появятся"],
+  ["1/2", "Ивент ещё не начался"],
+  ["Финал", "Ивент ещё не начался"],
 ];
 
 const TICKETS = {
@@ -92,11 +98,27 @@ document.addEventListener("click", (e) => {
   b.insertAdjacentHTML("beforeend", `<iframe src="https://www.youtube-nocookie.com/embed/${b.dataset.short}?autoplay=1&playsinline=1&rel=0" title="${b.getAttribute("aria-label")}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`);
 });
 
-$(".eps").innerHTML = ARCHIVE.map(([id, t, s], i) => `
+const stageTabs = $(".stages");
+const stagePanel = $(".stage-panel");
+stageTabs.innerHTML = STAGES.map(([name, v], i) => `
+  <button class="stage" type="button" role="tab" data-stage="${i}"${typeof v === "string" ? ' data-empty=""' : ""}>${name}</button>`).join("");
+const showStage = (i) => {
+  const [name, v] = STAGES[i];
+  $$(".stage", stageTabs).forEach((b, j) => b.setAttribute("aria-selected", String(j === i)));
+  stagePanel.setAttribute("aria-label", name === "Финал" ? name : `${name} финала`);
+  stagePanel.innerHTML = typeof v === "string"
+    ? `<p class="stage-panel__empty"><b>${v}</b></p>`
+    : `<ol class="eps">${v.map(([id, t]) => `
   <li><a href="${yt(id)}" target="_blank" rel="noopener">
     <img src="assets/yt/${id}.jpg" alt="" width="1280" height="720" loading="lazy">
-    <span class="t">${t.replace(" vs ", " <i>vs</i> ")}</span><span class="s">${s}</span>
-  </a></li>`).join("");
+    <span class="t">${t.replace(" vs ", " <i>vs</i> ")}</span>
+  </a></li>`).join("")}</ol>`;
+};
+stageTabs.addEventListener("click", (e) => {
+  const b = e.target.closest(".stage");
+  if (b) showStage(Number(b.dataset.stage));
+});
+showStage(0);
 
 // Карусель «Main Event»: прокрутка с привязкой, стрелки и счётчик
 const slides = $(".slides");
