@@ -1124,8 +1124,8 @@ body::after, .cover::after, .event::after, .lower__bg::after, .org__stage::after
   .vp__chan a { flex: 1 1 100%; text-align: center; }
 }
 
-/* v93 Ава канала — их настоящая картинка как есть: без перекраски, скругления и отступов */
-.vbox .vp__chan img { padding: 0; border-radius: 0; background: none; box-shadow: none; object-fit: cover; }
+/* v93 Ава канала — их настоящая картинка: круг вырезан ровно по их кругу, без перекраски и отступов */
+.vbox .vp__chan img { padding: 0; border-radius: 50%; background: none; box-shadow: none; object-fit: cover; }
 
 /* v93 Main Event на телефоне: подписи крупнее, от ширины кадра */
 @media (max-width: 767px) {
