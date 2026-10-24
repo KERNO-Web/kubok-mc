@@ -58,7 +58,7 @@ const STAGES = [
 ];
 
 const TICKETS = {
-  quarter: { title: "Кубок МЦ: HUNT. 1/4 финала", meta: "24 октября, Москва, 16+", url: "https://kbkmc.bibilet.ru/" },
+  quarter: { title: "Кубок МЦ: HUNT. 1/4 финала", meta: "24 октября, Москва, 18+", url: "https://kbkmc.bibilet.ru/" },
   after: { title: "Afterparty: HUNT", meta: "24 октября, 22:30, бар БТК, 18+", url: "https://kbkmc.bibilet.ru/w/afterparty-kubok-mc-hunt" },
 };
 
