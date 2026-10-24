@@ -1066,6 +1066,19 @@ body::after, .cover::after, .event::after, .lower__bg::after, .org__stage::after
   .eps--side img, .archive .eps--side img { width: 84px; }
 }
 
+/* v86 Формат баттла — отдельный шрифт IBM Plex Mono (капс, разрядка, как подпись в деле), ники — жирный слэб.
+   Этим же шрифтом подписаны форматы во всех сезонах (Main Event, плееры) */
+:root { --mono: "IBM Plex Mono", ui-monospace, monospace; }
+.fmt { display: inline-flex; align-items: center; gap: 12px; font: 600 clamp(13px, 1.05vw, 16px)/1 var(--mono); text-transform: uppercase; letter-spacing: .2em; }
+.fmt::before, .fmt::after { content: ""; width: 28px; height: 2px; background: currentColor; opacity: .55; }
+.extra__view .slide figcaption .fmt { color: var(--ink-red); }
+.extra__view .slide figcaption b.nicks { font: 900 clamp(20px, 2.1vw, 34px)/1.15 var(--slab); text-wrap: balance; }
+.extra__view .slide figcaption b.nicks i { font-style: normal; color: var(--ink-red); padding: 0 .1em 0 0; }
+.extra__view .slide figcaption b.nicks i[hidden] { display: none; }
+.extra__view .slide figcaption b.nicks span { white-space: nowrap; }
+@media (max-width: 767px) { .extra__view .slide figcaption b.nicks { font-size: 19px; } }
+.vp__t b small, .eps--side .t small { font-family: var(--mono) !important; font-weight: 600 !important; letter-spacing: .14em !important; }
+
 /* ============ v35 Мобилка по аудиту (docs/AUDIT_MOBILE.md). Блок последний — поздние правила для ПК его не перебивают ============ */
 
 /* Main Event: стрелки по центру кадра на любой ширине (cqw = ширина кадра внутри рамки) */

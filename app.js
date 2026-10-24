@@ -689,7 +689,15 @@ demoForm(mo, (f) => `${f.get("name")}, футболка «${f.get("tee")}», р�
 }
 
 // Main Event: «vs» в подписи пары — красным
-$$(".slide figcaption b").forEach((b) => { b.innerHTML = b.textContent.replace(/ vs /i, " <i>vs</i> "); });
+$$(".slide figcaption b:not(.nicks)").forEach((b) => { b.innerHTML = b.textContent.replace(/ vs /i, " <i>vs</i> "); });
+// Список ников через «·»: точка, оказавшаяся в начале строки после переноса, прячется
+const nickSeps = () => $$(".nicks").forEach((b) => {
+  const items = $$("span", b);
+  items.forEach((s) => { const i = $("i", s); if (i) i.hidden = false; });
+  items.forEach((s, k) => { const i = $("i", s); if (i && k && s.offsetTop > items[k - 1].offsetTop + 4) i.hidden = true; });
+});
+document.fonts.ready.then(nickSeps);
+$$(".nicks").forEach((b) => new ResizeObserver(nickSeps).observe(b));
 
 // v38 Фильтры сезонов. HUNT: виньетка по краям экрана, пока HUNT в кадре (только ПК)
 {
