@@ -71,14 +71,6 @@ $(".bracket__list").innerHTML = BRACKET.map(([fa, a, fb, b]) => `
 $(".gone").innerHTML = GONE.map(([f, n]) => `
   <figure><img src="assets/${f}.jpg" alt="${n}" width="138" height="138" loading="lazy"><figcaption>${n}</figcaption></figure>`).join("");
 
-$$(".tiles").forEach((box) => {
-  box.innerHTML = SEASONS[box.dataset.season].map(([id, k, t]) => `
-    <a class="tile" href="${yt(id)}" target="_blank" rel="noopener">
-      <img src="assets/yt/${id}.jpg" alt="" width="1280" height="720" loading="lazy">
-      <span class="tile__k">${k}</span><span class="tile__t">${t}</span>
-    </a>`).join("");
-});
-
 $$("[data-moments]").forEach((box) => {
   $(".moments__row", box).innerHTML = MOMENTS[box.dataset.moments].map(([id, t]) => `
     <figure class="moment">
@@ -102,17 +94,63 @@ const stageTabs = $(".stages");
 const stagePanel = $(".stage-panel");
 stageTabs.innerHTML = STAGES.map(([name, v], i) => `
   <button class="stage" type="button" role="tab" data-stage="${i}"${typeof v === "string" ? ' data-empty=""' : ""}>${name}</button>`).join("");
+// Плеер выпусков — один на все блоки (HUNT по стадиям, прошлые сезоны целиком), вид задаёт сезон:
+// слева экран (обложка с кнопкой → ролик прямо здесь), под ним подпись «01 / 08 · пара · ← →», справа нумерованный список
+const VP = new WeakMap();
+const vpPick = (host, k, play) => {
+  const eps = VP.get(host);
+  const [id, t, kind] = eps[k];
+  const pad = (n) => String(n).padStart(2, "0");
+  const pair = t.replace(" vs ", " <i>vs</i> ");
+  host.dataset.ep = k;
+  $$(".eps--side button", host).forEach((b) => {
+    const on = Number(b.dataset.ep) === k;
+    b.classList.toggle("on", on);
+    b.classList.toggle("is-play", on && play);
+  });
+  $(".vp__t", host).innerHTML = `<span class="vp__n">${pad(k + 1)} / ${pad(eps.length)}</span><b>${kind ? `<small>${kind}</small>` : ""}${pair}</b>
+    <span class="vp__nav"><button type="button" data-ep-step="-1" aria-label="Предыдущий баттл">←</button><button type="button" data-ep-step="1" aria-label="Следующий баттл">→</button></span>
+    <a href="${yt(id)}" target="_blank" rel="noopener">YouTube ↗</a>`;
+  $(".vp__screen", host).innerHTML = play
+    ? `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&playsinline=1&rel=0" title="${t}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`
+    : `<button class="vp__poster" type="button" data-ep-play="${k}" aria-label="Смотреть: ${t}"><img src="assets/yt/${id}.jpg" alt="" width="1280" height="720"><span class="vp__play" aria-hidden="true"></span></button>`;
+};
+// eps: [[id, "A vs B", вид баттла?], …]
+const playerUp = (host, eps) => {
+  VP.set(host, eps);
+  host.classList.add("vbox");
+  host.innerHTML = `<div class="vp"><div class="vp__screen"></div><p class="vp__t"></p></div>
+  <ol class="eps eps--side">${eps.map(([id, t, kind], k) => `
+  <li><button type="button" data-ep="${k}">
+    <span class="n">${String(k + 1).padStart(2, "0")}</span>
+    <img src="assets/yt/${id}.jpg" alt="" width="1280" height="720" loading="lazy">
+    <span class="t">${kind ? `<small>${kind}</small>` : ""}${t.replace(" vs ", " <i>vs</i> ")}</span>
+  </button></li>`).join("")}</ol>`;
+  vpPick(host, 0, false);
+};
+document.addEventListener("click", (e) => {
+  const host = e.target.closest(".vbox");
+  if (!host || !VP.has(host)) return;
+  const st = e.target.closest("[data-ep-step]");
+  if (st) {
+    const len = VP.get(host).length;
+    vpPick(host, (Number(host.dataset.ep) + Number(st.dataset.epStep) + len) % len, !!$(".vp__screen iframe", host));
+    return;
+  }
+  const b = e.target.closest("[data-ep], [data-ep-play]");
+  if (b) vpPick(host, Number(b.dataset.ep ?? b.dataset.epPlay), true);
+});
+$$(".vbox--season").forEach((box) => playerUp(box, SEASONS[box.dataset.season].map(([id, kind, t]) => [id, t, kind])));
+
 const showStage = (i) => {
   const [name, v] = STAGES[i];
   $$(".stage", stageTabs).forEach((b, j) => b.setAttribute("aria-selected", String(j === i)));
   stagePanel.setAttribute("aria-label", name === "Финал" ? name : `${name} финала`);
-  stagePanel.innerHTML = typeof v === "string"
-    ? `<p class="stage-panel__empty"><b>${v}</b></p>`
-    : `<ol class="eps">${v.map(([id, t]) => `
-  <li><a href="${yt(id)}" target="_blank" rel="noopener">
-    <img src="assets/yt/${id}.jpg" alt="" width="1280" height="720" loading="lazy">
-    <span class="t">${t.replace(" vs ", " <i>vs</i> ")}</span>
-  </a></li>`).join("")}</ol>`;
+  if (typeof v === "string") {
+    VP.delete(stagePanel);
+    stagePanel.classList.remove("vbox");
+    stagePanel.innerHTML = `<p class="stage-panel__empty"><b>${v}</b></p>`;
+  } else playerUp(stagePanel, v);
 };
 stageTabs.addEventListener("click", (e) => {
   const b = e.target.closest(".stage");
@@ -162,9 +200,31 @@ $$(".lb__nav", lb).forEach((b) => b.addEventListener("click", () => lbShow(lbIdx
 $(".lb__x", lb).addEventListener("click", () => lb.close());
 lb.addEventListener("click", (e) => { if (e.target === lb) lb.close(); });
 lb.addEventListener("keydown", (e) => { if (e.key === "ArrowLeft") lbShow(lbIdx - 1); if (e.key === "ArrowRight") lbShow(lbIdx + 1); });
+lb.addEventListener("close", () => lb.classList.remove("is-single"));
 
+// Афиши: не висят в шапках сезонов, у каждого одинаковая кнопка «Афиша» → просмотр. Новую афишу HUNT — дописать в массив
+const POSTERS = {
+  hunt: ["assets/hunt-board.jpg", "assets/hunt-top16.jpg", "assets/poster-after.jpg"],
+  svoboda: ["assets/poster-svoboda.jpg"],
+  btb: ["assets/poster-btb.jpg"],
+};
+$$("[data-posters]").forEach((b) => {
+  const key = b.dataset.posters, list = POSTERS[key];
+  if (list.length > 1) b.textContent = `Афиши · ${list.length}`;
+  b.addEventListener("click", () => {
+    lbList = list;
+    lb.dataset.skin = key;
+    lb.classList.toggle("is-single", list.length < 2);
+    lbShow(0);
+    lb.showModal();
+  });
+});
+
+// «Фото с баттлов» — не лента, а доска с автосменой (boardUp ниже); при reduced-motion остаётся лента со стрелками
+const krugBoard = !matchMedia("(prefers-reduced-motion: reduce)").matches;
 $$("[data-krug]").forEach((box) => {
   const key = box.dataset.krug;
+  if (krugBoard) box.classList.add("is-board");
   const row = $(".krug__row", box);
   const urls = KRUG[key].map(([f]) => `assets/krug/${key}/${f}.jpg`);
   row.innerHTML = KRUG[key].map(([f, w, h], i) => `
@@ -180,12 +240,13 @@ $$("[data-krug]").forEach((box) => {
   upd();
   row.addEventListener("scroll", upd, { passive: true });
   $$(".krug__nav", box).forEach((b) => b.addEventListener("click", () => {
+    if (box.classList.contains("is-board")) return;
     const i = Math.max(0, Math.min(items.length - 1, at() + Number(b.dataset.dir)));
     row.scrollTo({ left: items[i].offsetLeft - row.offsetLeft, behavior: "smooth" });
   }));
   // перетаскивание мышью; если тянули, клик не открывает фото
   let down = null, moved = false;
-  row.addEventListener("pointerdown", (e) => { if (e.pointerType !== "mouse") return; down = { x: e.clientX, s: row.scrollLeft }; moved = false; row.classList.add("is-drag"); });
+  row.addEventListener("pointerdown", (e) => { if (e.pointerType !== "mouse" || box.classList.contains("is-board")) return; down = { x: e.clientX, s: row.scrollLeft }; moved = false; row.classList.add("is-drag"); });
   addEventListener("pointermove", (e) => { if (!down) return; const dx = e.clientX - down.x; if (Math.abs(dx) > 5) moved = true; row.scrollLeft = down.s - dx; });
   addEventListener("pointerup", () => { if (!down) return; down = null; row.classList.remove("is-drag"); });
   row.addEventListener("click", (e) => {
@@ -224,11 +285,148 @@ const stringUp = (box, rowSel, cardSel) => {
   draw();
   addEventListener("load", draw);
   new ResizeObserver(draw).observe(box);
+  return draw;
 };
 const huntMoments = $('[data-moments="hunt"]');
 const huntKrug = $('[data-krug="hunt"]');
 if (huntMoments) stringUp(huntMoments, ".moments__row", ".moment");
-if (huntKrug) stringUp(huntKrug, ".krug__row", ".krug__ph");
+const drawKrug = huntKrug && stringUp(huntKrug, ".krug__row", ".krug__ph");
+// Доска «Фото с баттлов» во всех сезонах одинаковая: столько целых фото, сколько влезает; листается страницами
+// только стрелками (на телефоне ещё свайп, с клавиатуры ← →). Колесо не трогаем — наведение не должно мешать прокрутке сайта. Как фото сменяется — стиль сезона (CSS .is-off/.is-on):
+// HUNT — падает из-под булавки, Св*бода — новое напыляется баллончиком поверх старого (canvas, sprayIn), BTB — как старый телик (схлопнулось в полоску, развернулось)
+const FX = { hunt: [480, 520], svoboda: [0, 0], btb: [330, 560] };
+// Св*бода: новое фото «напыляется» на canvas поверх старого — тысячи капель вокруг сопла, сопло идёт зигзагом в три прохода
+const sprayIn = async (b, url) => {
+  const img = $("img", b), pic = new Image();
+  pic.src = url;
+  await pic.decode().catch(() => {});
+  const dpr = Math.min(2, devicePixelRatio || 1);
+  const W = Math.round(img.clientWidth * dpr), H = Math.round(img.clientHeight * dpr);
+  const cv = document.createElement("canvas"), mask = document.createElement("canvas");
+  cv.className = "krug__spray";
+  cv.width = mask.width = W;
+  cv.height = mask.height = H;
+  b.append(cv);
+  const ctx = cv.getContext("2d"), m = mask.getContext("2d");
+  const k = Math.max(W / pic.naturalWidth, H / pic.naturalHeight), sw = W / k, sh = H / k;
+  const sx = (pic.naturalWidth - sw) / 2, sy = (pic.naturalHeight - sh) / 2;
+  const path = [[-.05, .18], [1.05, .14], [-.05, .52], [1.05, .5], [-.05, .86], [1.05, .84]];
+  const R = H * .26, T = 950, t0 = performance.now();
+  let last = 0;
+  await new Promise((done) => {
+    // время берём своё: метка rAF бывает раньше t0, отрицательный прогресс ронял анимацию и доска зависала
+    const frame = () => {
+      const p = Math.max(last, Math.min(1, (performance.now() - t0) / T));
+      // сопло идёт от last до p, капли сыплются по всему отрезку, чтобы на быстрых кадрах не было дыр
+      for (let q = last; q <= p; q += .012) {
+        const seg = q * (path.length - 1), i = Math.min(path.length - 2, Math.floor(seg)), f = seg - i;
+        const x = (path[i][0] + (path[i + 1][0] - path[i][0]) * f) * W, y = (path[i][1] + (path[i + 1][1] - path[i][1]) * f) * H;
+        const g = m.createRadialGradient(x, y, 0, x, y, R * .62);
+        g.addColorStop(0, "rgba(0,0,0,.55)");
+        g.addColorStop(1, "rgba(0,0,0,0)");
+        m.globalAlpha = 1;
+        m.fillStyle = g;
+        m.fillRect(x - R, y - R, R * 2, R * 2);
+        m.fillStyle = "#000";
+        for (let d = 0; d < 90; d++) {
+          const a = Math.random() * 6.283, r = R * .5 * Math.sqrt(-2 * Math.log(Math.random() || 1e-6));
+          m.globalAlpha = .4 + Math.random() * .6;
+          m.beginPath();
+          m.arc(x + Math.cos(a) * r, y + Math.sin(a) * r, (Math.random() * 1.6 + .5) * dpr, 0, 6.283);
+          m.fill();
+        }
+      }
+      last = p;
+      // последние 15% — краска ложится плотно везде
+      if (p > .85) { m.globalAlpha = (p - .85) / .15 * .5; m.fillRect(0, 0, W, H); }
+      ctx.globalCompositeOperation = "source-over";
+      ctx.clearRect(0, 0, W, H);
+      ctx.drawImage(pic, sx, sy, sw, sh, 0, 0, W, H);
+      ctx.globalCompositeOperation = "destination-in";
+      ctx.drawImage(mask, 0, 0);
+      if (p < 1) requestAnimationFrame(frame); else done();
+    };
+    requestAnimationFrame(frame);
+  });
+  return cv;
+};
+const boardUp = (box, redraw) => {
+  const key = box.dataset.krug;
+  const row = $(".krug__row", box);
+  const btns = $$(".krug__ph", row);
+  const count = $(".krug__count", box);
+  const N = btns.length;
+  const [tOff, tOn] = FX[key];
+  const src = (i) => `assets/krug/${key}/${KRUG[key][i][0]}.jpg`;
+  const pad = (v) => String(v).padStart(2, "0");
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  let n = 1, start = 0, busy = false, queued = 0;
+  const label = () => { count.textContent = n > 1 ? `${pad(start + 1)}–${pad(start + n)} / ${N}` : `${pad(start + 1)} / ${N}`; };
+  const put = (b, i) => { b.dataset.i = i; $("img", b).src = src(i); };
+  // сколько фото помещается целиком; лишние места прячем
+  const fit = () => {
+    btns.forEach((b) => { b.hidden = false; });
+    const w = btns[0].getBoundingClientRect().width, gap = parseFloat(getComputedStyle(row).columnGap) || 0;
+    n = Math.min(N, Math.max(1, Math.floor((row.clientWidth + gap) / (w + gap * 2))));
+    start = Math.min(start, N - n);
+    btns.forEach((b, k) => { b.hidden = k >= n; if (k < n) put(b, start + k); });
+    row.style.justifyContent = n === 1 ? "center" : "";
+    label();
+    redraw?.();
+  };
+  const swap = async (b, i, delay) => {
+    await wait(delay);
+    const img = $("img", b), pre = new Image();
+    pre.src = src(i);
+    await pre.decode().catch(() => {});
+    if (key === "svoboda") {
+      b.classList.add("is-on");
+      const cv = await sprayIn(b, src(i));
+      put(b, i);
+      await pre.decode().catch(() => {});
+      cv.remove();
+      b.classList.remove("is-on");
+      return;
+    }
+    b.classList.add("is-off");
+    await wait(tOff);
+    put(b, i);
+    b.classList.replace("is-off", "is-on");
+    await wait(tOn);
+    b.classList.remove("is-on");
+  };
+  // страница вперёд/назад, по кругу
+  // клик во время смены не теряется: запоминаем последний и выполняем сразу после
+  const go = async (dir) => {
+    if (busy) { queued = dir; return; }
+    const to = dir > 0 ? (start >= N - n ? 0 : Math.min(start + n, N - n)) : (start === 0 ? N - n : Math.max(0, start - n));
+    if (to === start) return;
+    busy = true;
+    start = to;
+    label();
+    const order = btns.slice(0, n).map((b, k) => [b, k]);
+    if (dir < 0) order.reverse();
+    try { await Promise.all(order.map(([b, k], step) => swap(b, start + k, step * 120))); }
+    finally {
+      busy = false;
+      if (queued) { const d = queued; queued = 0; go(d); }
+    }
+  };
+  $$(".krug__nav", box).forEach((b) => b.addEventListener("click", () => go(Number(b.dataset.dir))));
+  let tx = null;
+  row.addEventListener("touchstart", (e) => { tx = e.touches[0].clientX; }, { passive: true });
+  row.addEventListener("touchend", (e) => {
+    if (tx === null) return;
+    const dx = e.changedTouches[0].clientX - tx;
+    tx = null;
+    if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+  }, { passive: true });
+  row.addEventListener("keydown", (e) => { if (e.key === "ArrowRight") go(1); if (e.key === "ArrowLeft") go(-1); });
+  fit();
+  let fitT;
+  new ResizeObserver(() => { clearTimeout(fitT); fitT = setTimeout(fit, 150); }).observe(row);
+};
+$$(".krug.is-board").forEach((box) => boardUp(box, box === huntKrug ? drawKrug : null));
 // шапка HUNT: полароиды и бумажки на стене связаны ниткой, у каждой стены своя
 $$(".ev-head .wall").forEach((w) => stringUp(w, ".wall__in", ".pol"));
 
@@ -257,7 +455,7 @@ const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
 if (!still) {
   document.documentElement.classList.add("anim");
   const groups = [
-    [".ev-head__plate", "stamp"], [".ev-head__date", "pop"], [".ev-head__sub, .ev-head__btn", "up"],
+    [".ev-head__plate", "stamp"], [".ev-head__date", "pop"], [".ev-head__sub, .ev-head__acts", "up"],
     [".bracket__list li", "side"], [".tag", "pop"],
     [".sv__left", "slap"], [".sv__bars span", "pop"],
     [".btb__title", "slam"], [".btb__bar", "stamp"], [".btb__when, .btb__text", "up"],
@@ -484,7 +682,7 @@ $$(".slide figcaption b").forEach((b) => { b.innerHTML = b.textContent.replace(/
 }
 // BTB: хроматическая аберрация — при появлении блока каналы разъехались и оседают до едва заметной (на телефоне сразу слабая)
 {
-  const groups = { title: ".btb__title", poster: ".btb .season__poster", tiles: ".btb .tiles", moments: ".moments--btb", krug: ".krug--btb" };
+  const groups = { title: ".btb__title", poster: ".btb .season__poster", tiles: ".btb .vbox", moments: ".moments--btb", krug: ".krug--btb" };
   const animate = !touchUI.matches && !matchMedia("(prefers-reduced-motion: reduce)").matches;
   const setDx = (id, dx) => { const offs = document.querySelectorAll(`#ca-${id} feOffset`); offs[0].setAttribute("dx", dx.toFixed(2)); offs[1].setAttribute("dx", (-dx).toFixed(2)); };
   Object.entries(groups).forEach(([id, sel]) => {
