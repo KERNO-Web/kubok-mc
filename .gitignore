@@ -26,3 +26,6 @@
 .work/fx/rec/
 .work/fx/old/
 .work/fx/rec2/
+
+# переписка с оргами — только локально
+/docs/OUTREACH.md
