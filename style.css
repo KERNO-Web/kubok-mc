@@ -927,33 +927,31 @@ body::after, .cover::after, .event::after, .lower__bg::after, .org__stage::after
 .krug.is-board .krug__count { min-width: 6.2em; text-align: right; }
 .krug__ph.is-off, .krug__ph.is-on { pointer-events: none; }
 /* HUNT: раскачалось на булавке и упало, следующее пришпилили (булавка и нитка остаются) */
-.krug--hunt .krug__ph.is-off { animation: unpin .85s cubic-bezier(.45, 0, .75, .3) forwards; transform-origin: 50% 10px; }
-.krug--hunt .krug__ph.is-on { animation: repin .8s cubic-bezier(.2, .9, .3, 1.1) both; transform-origin: 50% 10px; }
+/* точка поворота у булавки — всегда, а не только на время анимации: иначе после смены наклонённое фото прыгало на 3px */
+.krug--hunt .krug__ph { transform-origin: 50% 10px; }
+.krug--hunt .krug__ph.is-off { animation: unpin .85s cubic-bezier(.45, 0, .75, .3) forwards; }
+.krug--hunt .krug__ph.is-on { animation: repin .8s cubic-bezier(.2, .9, .3, 1.1) both; }
 @keyframes unpin { 0% { transform: none; z-index: 1; } 16% { transform: rotate(-6deg); } 30% { transform: rotate(4deg); } 40% { transform: translateY(8px) rotate(-2deg); opacity: 1; z-index: 1; } 42% { z-index: 4; } 100% { transform: translateY(90%) rotate(12deg); opacity: 0; z-index: 4; } }
 @keyframes repin { 0% { transform: translateY(-34px) rotate(6deg) scale(1.05); opacity: 0; } 55% { opacity: 1; } 100% { transform: none; opacity: 1; } }
 /* Св*бода: новое фото напыляется баллончиком поверх старого (canvas из app.js sprayIn) */
 .krug__spray { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; }
 
-/* BTB: старый телик — перетекание: старое фото (.krug__ghost) гаснет с мерцанием, сдвигом строк и разъездом каналов, новое проявляется из засветки */
+/* BTB: старый телик без чёрного кадра — новое фото уже лежит снизу, старое (.krug__ghost) поверх плавно схлопывается
+   в светящуюся полоску и гаснет; по экрану мягко бегут строки развёртки. Без мерцаний */
 .krug--btb .krug__ph { position: relative; background: #050505; }
-.krug--btb .krug__ph::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: 0; background: repeating-linear-gradient(0deg, rgba(0, 0, 0, .4) 0 2px, transparent 2px 4px) 0 0 / 100% 4px, linear-gradient(rgba(255, 255, 255, .07) 0 0); }
-.krug--btb .krug__ph.is-on::after { animation: tvLines .9s linear both; }
+.krug--btb .krug__ph::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: 0; background: repeating-linear-gradient(0deg, rgba(0, 0, 0, .35) 0 2px, transparent 2px 4px) 0 0 / 100% 4px; }
+.krug--btb .krug__ph.is-on::after { animation: tvLines .8s ease-out both; }
 .krug__ghost { position: absolute; inset: 0; z-index: 1; width: 100% !important; height: 100% !important; object-fit: cover; pointer-events: none; }
-.krug--btb .krug__ph.is-on .krug__ghost { animation: tvFade .9s linear forwards; }
-.krug--btb .krug__ph.is-on img:not(.krug__ghost) { animation: tvIn .9s ease-out both; }
-@keyframes tvFade {
-  0% { opacity: 1; transform: none; }
-  12% { opacity: .9; transform: translateX(-5px); filter: brightness(1.35) drop-shadow(6px 0 0 rgba(255, 0, 70, .55)) drop-shadow(-6px 0 0 rgba(0, 230, 255, .5)); }
-  22% { opacity: .95; transform: translateX(3px) skewX(-2deg); }
-  34% { opacity: .65; transform: translateX(-2px); filter: brightness(1.6) drop-shadow(4px 0 0 rgba(255, 0, 70, .5)) drop-shadow(-4px 0 0 rgba(0, 230, 255, .45)); }
-  46% { opacity: .75; transform: translateX(4px); }
-  60% { opacity: .4; transform: translateX(-3px) skewX(2deg); }
-  74% { opacity: .5; transform: none; }
-  88% { opacity: .15; }
-  100% { opacity: 0; transform: none; filter: brightness(1.8); }
+.krug--btb .krug__ph.is-on .krug__ghost { animation: tvCollapse .8s cubic-bezier(.5, 0, .75, .35) forwards; }
+.krug--btb .krug__ph.is-on img:not(.krug__ghost) { animation: tvIn .8s ease-out both; }
+@keyframes tvCollapse {
+  0% { transform: none; opacity: 1; }
+  60% { transform: scale(1.01, .035); filter: brightness(2.2) saturate(.5); opacity: 1; }
+  85% { transform: scale(.45, .02); filter: brightness(3.4) drop-shadow(0 0 6px rgba(255, 255, 255, .9)); opacity: .9; }
+  100% { transform: scale(0, .02); filter: brightness(4) drop-shadow(0 0 6px rgba(255, 255, 255, .9)); opacity: 0; }
 }
-@keyframes tvIn { 0% { filter: brightness(1.7) contrast(1.2); transform: scaleY(1.03); } 60% { filter: brightness(1.15); transform: scaleY(1.005); } 100% { transform: none; } }
-@keyframes tvLines { 0% { opacity: .9; background-position: 0 0, 0 0; } 70% { opacity: .75; } 100% { opacity: 0; background-position: 0 36px, 0 0; } }
+@keyframes tvIn { 0% { filter: brightness(1.25) contrast(1.08); } 100% { filter: brightness(1); } }
+@keyframes tvLines { 0% { opacity: .7; background-position: 0 0; } 100% { opacity: 0; background-position: 0 32px; } }
 
 /* v82 Плеер выпусков (HUNT «Видео с турнира» и прошлые сезоны вместо плиток): раскладка общая, вид — у каждого сезона свой */
 .vbox { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: clamp(22px, 2.6vw, 40px); align-items: start; }
