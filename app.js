@@ -549,7 +549,7 @@ if (!still) {
 const touchUI = matchMedia("(hover: none)");
 // большой кадр организатора: на телефоне касание переключает на цветной второй кадр и обратно
 $$(".org__stage").forEach((st) => st.addEventListener("click", () => { if (touchUI.matches) st.closest(".org").classList.toggle("is-color"); }));
-const ORG = {"h": [["h-01", 0], ["h-02", 0], ["h-03", 0], ["h-06", 1]], "p": [["p-01", 0], ["p-02", 0], ["p-04", 0], ["p-06", 0]]};
+const ORG = {"h": [["h-01", 0], ["h-02", 0], ["h-03", 0], ["h-09", 0]], "p": [["p-01", 0], ["p-02", 0], ["p-04", 0], ["p-06", 0]]};
 $$("[data-org]").forEach((art) => {
   const list = ORG[art.dataset.org];
   const urls = list.map(([f]) => `assets/orgs/${f}.webp`);
