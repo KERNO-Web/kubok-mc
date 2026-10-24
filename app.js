@@ -293,9 +293,11 @@ if (huntMoments) stringUp(huntMoments, ".moments__row", ".moment");
 const drawKrug = huntKrug && stringUp(huntKrug, ".krug__row", ".krug__ph");
 // Доска «Фото с баттлов» во всех сезонах одинаковая: столько целых фото, сколько влезает; листается страницами
 // только стрелками (на телефоне ещё свайп, с клавиатуры ← →). Колесо не трогаем — наведение не должно мешать прокрутке сайта. Как фото сменяется — стиль сезона (CSS .is-off/.is-on):
-// HUNT — падает из-под булавки, Св*бода — новое напыляется баллончиком поверх старого (canvas, sprayIn), BTB — как старый телик (схлопнулось в полоску, развернулось)
-const FX = { hunt: [480, 520], svoboda: [0, 0], btb: [330, 560] };
-// Св*бода: новое фото «напыляется» на canvas поверх старого — тысячи капель вокруг сопла, сопло идёт зигзагом в три прохода
+// HUNT — падает из-под булавки, Св*бода — новое напыляется баллончиком поверх старого (canvas, sprayIn), BTB — старый телик:
+// старое фото гаснет «призраком» с мерцанием и строками развёртки, новое проявляется под ним
+const FX = { hunt: [850, 800], svoboda: [0, 0], btb: [0, 900] };
+// Св*бода: новое фото «напыляется» на canvas поверх старого — плотное пятно краски с каплями по краю, сопло идёт зигзагом
+// в четыре прохода с нахлёстом: к концу краска сама закрывает всё фото, без резкого «доливания» и пропадающих точек
 const sprayIn = async (b, url) => {
   const img = $("img", b), pic = new Image();
   pic.src = url;
@@ -310,8 +312,8 @@ const sprayIn = async (b, url) => {
   const ctx = cv.getContext("2d"), m = mask.getContext("2d");
   const k = Math.max(W / pic.naturalWidth, H / pic.naturalHeight), sw = W / k, sh = H / k;
   const sx = (pic.naturalWidth - sw) / 2, sy = (pic.naturalHeight - sh) / 2;
-  const path = [[-.05, .18], [1.05, .14], [-.05, .52], [1.05, .5], [-.05, .86], [1.05, .84]];
-  const R = H * .26, T = 950, t0 = performance.now();
+  const path = [[-.08, .1], [1.08, .08], [-.08, .37], [1.08, .35], [-.08, .64], [1.08, .62], [-.08, .92], [1.08, .9]];
+  const R = H * .3, T = 1250, t0 = performance.now();
   let last = 0;
   await new Promise((done) => {
     // время берём своё: метка rAF бывает раньше t0, отрицательный прогресс ронял анимацию и доска зависала
@@ -321,15 +323,16 @@ const sprayIn = async (b, url) => {
       for (let q = last; q <= p; q += .012) {
         const seg = q * (path.length - 1), i = Math.min(path.length - 2, Math.floor(seg)), f = seg - i;
         const x = (path[i][0] + (path[i + 1][0] - path[i][0]) * f) * W, y = (path[i][1] + (path[i + 1][1] - path[i][1]) * f) * H;
-        const g = m.createRadialGradient(x, y, 0, x, y, R * .62);
-        g.addColorStop(0, "rgba(0,0,0,.55)");
+        const g = m.createRadialGradient(x, y, 0, x, y, R * .78);
+        g.addColorStop(0, "rgba(0,0,0,.8)");
+        g.addColorStop(.55, "rgba(0,0,0,.5)");
         g.addColorStop(1, "rgba(0,0,0,0)");
         m.globalAlpha = 1;
         m.fillStyle = g;
         m.fillRect(x - R, y - R, R * 2, R * 2);
         m.fillStyle = "#000";
-        for (let d = 0; d < 90; d++) {
-          const a = Math.random() * 6.283, r = R * .5 * Math.sqrt(-2 * Math.log(Math.random() || 1e-6));
+        for (let d = 0; d < 60; d++) {
+          const a = Math.random() * 6.283, r = R * .42 * Math.sqrt(-2 * Math.log(Math.random() || 1e-6));
           m.globalAlpha = .4 + Math.random() * .6;
           m.beginPath();
           m.arc(x + Math.cos(a) * r, y + Math.sin(a) * r, (Math.random() * 1.6 + .5) * dpr, 0, 6.283);
@@ -337,8 +340,9 @@ const sprayIn = async (b, url) => {
         }
       }
       last = p;
-      // последние 15% — краска ложится плотно везде
-      if (p > .85) { m.globalAlpha = (p - .85) / .15 * .5; m.fillRect(0, 0, W, H); }
+      // последние 20% — тонкий слой по всей площади каждый кадр: оставшиеся просветы затягиваются плавно
+      if (p > .8) { m.globalAlpha = .1; m.fillRect(0, 0, W, H); }
+      if (p >= 1) { m.globalAlpha = 1; m.fillRect(0, 0, W, H); }
       ctx.globalCompositeOperation = "source-over";
       ctx.clearRect(0, 0, W, H);
       ctx.drawImage(pic, sx, sy, sw, sh, 0, 0, W, H);
@@ -388,6 +392,18 @@ const boardUp = (box, redraw) => {
       b.classList.remove("is-on");
       return;
     }
+    if (key === "btb") {
+      const ghost = img.cloneNode();
+      ghost.className = "krug__ghost";
+      ghost.removeAttribute("loading");
+      b.append(ghost);
+      put(b, i);
+      b.classList.add("is-on");
+      await wait(tOn);
+      ghost.remove();
+      b.classList.remove("is-on");
+      return;
+    }
     b.classList.add("is-off");
     await wait(tOff);
     put(b, i);
@@ -406,7 +422,7 @@ const boardUp = (box, redraw) => {
     label();
     const order = btns.slice(0, n).map((b, k) => [b, k]);
     if (dir < 0) order.reverse();
-    try { await Promise.all(order.map(([b, k], step) => swap(b, start + k, step * 120))); }
+    try { await Promise.all(order.map(([b, k], step) => swap(b, start + k, step * (key === "hunt" ? 200 : 120)))); }
     finally {
       busy = false;
       if (queued) { const d = queued; queued = 0; go(d); }
