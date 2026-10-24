@@ -12,7 +12,7 @@ const SEASONS = {
     ["sg3dTXCI8GQ", "Title match", "Palmdropov vs Изтолпы"],
     ["kEjqtsZIfQs", "BPM", "Нокту vs Jollo"],
     ["ifDfwytzN74", "BPM", "Никита Мастяк vs Ирен"],
-    ["nPfCwm6pGFU", "Перестр*лка", "Майк Стикс vs Кукиш с Хаслом"],
+    ["nPfCwm6pGFU", "Перестрелка", "Майк Стикс vs Кукиш с Хаслом"],
     ["CG8uANZNedE", "BPM", "GD4 vs Smoke [PlanB]"],
     ["OgdpmpIjeKs", "2x2", "Verch.Fate, Killhomie vs Mickey Mouse, Бач"],
     ["MaFPQ9g302k", "Beatbox battle", "Alphavite, Saidmusician vs Doctor Kapustu!, Checkmate"],
@@ -64,7 +64,7 @@ const TICKETS = {
 
 const $ = (s, r = document) => r.querySelector(s);
 // «vs» по формату: у перестрелки вместо vs скрещённые револьверы (как на их обложках), цвет берут от vs
-const GUNS = `<i class="guns" title="Перестр*лка"><span class="sr-only">vs</span></i>`;
+const GUNS = `<i class="guns" title="Перестрелка"><span class="sr-only">vs</span></i>`;
 const vsFor = (t, kind) => t.replace(" vs ", kind && /перестр/i.test(kind) ? ` ${GUNS} ` : " <i>vs</i> ");
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const yt = (id) => `https://www.youtube.com/watch?v=${id}`;
@@ -112,8 +112,7 @@ const vpPick = (host, k, play) => {
     b.classList.toggle("is-play", on && play);
   });
   $(".vp__t", host).innerHTML = `<span class="vp__n">${pad(k + 1)} / ${pad(eps.length)}</span><b>${kind ? `<small>${kind}</small>` : ""}${pair}</b>
-    <span class="vp__nav"><button type="button" data-ep-step="-1" aria-label="Предыдущий баттл">←</button><button type="button" data-ep-step="1" aria-label="Следующий баттл">→</button></span>
-    <a href="${yt(id)}" target="_blank" rel="noopener">YouTube ↗</a>`;
+    <span class="vp__nav"><button type="button" data-ep-step="-1" aria-label="Предыдущий баттл">←</button><button type="button" data-ep-step="1" aria-label="Следующий баттл">→</button><a class="vp__yt" href="${yt(id)}" target="_blank" rel="noopener" aria-label="Смотреть на YouTube" title="Смотреть на YouTube"></a></span>`;
   $(".vp__screen", host).innerHTML = play
     ? `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&playsinline=1&rel=0" title="${t}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`
     : `<button class="vp__poster" type="button" data-ep-play="${k}" aria-label="Смотреть: ${t}"><img src="assets/yt/${id}.jpg" alt="" width="1280" height="720"><span class="vp__play" aria-hidden="true"></span></button>`;
@@ -122,7 +121,9 @@ const vpPick = (host, k, play) => {
 const playerUp = (host, eps) => {
   VP.set(host, eps);
   host.classList.add("vbox");
-  host.innerHTML = `<div class="vp"><div class="vp__screen"></div><p class="vp__t"></p></div>
+  host.innerHTML = `<div class="vp"><div class="vp__screen"></div><p class="vp__t"></p>
+  <div class="vp__chan"><img src="assets/logo.svg" alt="" width="336" height="271"><p><b>Кубок МЦ</b><span>422 тыс. подписчиков</span></p>
+    <a href="https://www.youtube.com/@kbkmc?sub_confirmation=1" target="_blank" rel="noopener">Подписаться</a></div></div>
   <ol class="eps eps--side">${eps.map(([id, t, kind], k) => `
   <li><button type="button" data-ep="${k}">
     <span class="n">${String(k + 1).padStart(2, "0")}</span>
@@ -373,8 +374,11 @@ const boardUp = (box, redraw) => {
   // сколько фото помещается целиком; лишние места прячем
   const fit = () => {
     btns.forEach((b) => { b.hidden = false; });
-    const w = btns[0].getBoundingClientRect().width, gap = parseFloat(getComputedStyle(row).columnGap) || 0;
-    n = Math.min(N, Math.max(1, Math.floor((row.clientWidth + gap) / (w + gap * 2))));
+    // целевая ширина фото ~400px; сколько влезает — столько и показываем, а ширину подгоняем, чтобы ряд был заполнен без дыр
+    const cs = getComputedStyle(row), gap = parseFloat(cs.columnGap) || 0;
+    const W = row.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    n = Math.min(N, Math.max(1, Math.floor((W + gap) / (400 + gap))));
+    row.style.setProperty("--pw", `${Math.floor((W - gap * (n - 1)) / n)}px`);
     start = Math.min(start, N - n);
     btns.forEach((b, k) => { b.hidden = k >= n; if (k < n) put(b, start + k); });
     row.style.justifyContent = n === 1 ? "center" : "";

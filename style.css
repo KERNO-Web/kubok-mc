@@ -147,11 +147,11 @@ ol, ul { list-style: none; }
 .moments--svoboda .moment:has(.is-on) figcaption { display: none; }
 
 /* BTB: костяная рамка и красные плашки, как на афише */
-.moments__plate { display: inline-block; padding: 9px 18px 7px; background: #d3161d; color: #ebe4d8; font: 400 30px/1 "Anton", var(--disp); text-transform: uppercase; letter-spacing: .03em; box-shadow: inset 0 0 0 3px #d3161d, inset 0 0 0 5px #ebe4d8; }
+.moments__plate { display: inline-block; padding: 9px 18px 7px; background: #d3161d; color: #ebe4d8; font: 700 30px/1 var(--disp); text-transform: uppercase; letter-spacing: .03em; box-shadow: inset 0 0 0 3px #d3161d, inset 0 0 0 5px #ebe4d8; }
 .moments--btb .moment { box-shadow: 0 0 0 4px #ebe4d8, 0 22px 40px -14px rgba(0, 0, 0, .95); }
 .moments--btb .moment__frame img { filter: contrast(1.08) saturate(.9); }
 .moments--btb .moment__play { background: #ebe4d8; color: #d3161d; }
-.moments--btb figcaption { position: absolute; z-index: 1; left: -6px; bottom: 18px; max-width: calc(100% - 4px); padding: 7px 11px 5px; rotate: -2deg; pointer-events: none; background: #d3161d; color: #ebe4d8; font: 400 clamp(15px, 1.25vw, 19px)/1.05 "Anton", var(--disp); letter-spacing: .02em; box-shadow: inset 0 0 0 2px #d3161d, inset 0 0 0 3.5px #ebe4d8, 0 8px 16px -6px rgba(0, 0, 0, .8); }
+.moments--btb figcaption { position: absolute; z-index: 1; left: -6px; bottom: 18px; max-width: calc(100% - 4px); padding: 7px 11px 5px; rotate: -2deg; pointer-events: none; background: #d3161d; color: #ebe4d8; font: 700 clamp(15px, 1.25vw, 19px)/1.05 var(--disp); letter-spacing: .02em; box-shadow: inset 0 0 0 2px #d3161d, inset 0 0 0 3.5px #ebe4d8, 0 8px 16px -6px rgba(0, 0, 0, .8); }
 .moments--btb .moment:has(.is-on) figcaption { display: none; }
 
 /* ИЗ КРУГА: карусель фото в каждом ивенте */
@@ -266,12 +266,12 @@ ol, ul { list-style: none; }
 .btb__head { grid-column: 1; grid-row: 1 / span 2; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); grid-template-rows: 1fr auto auto auto 1fr; column-gap: clamp(28px, 4vw, 60px); }
 .btb__title { grid-column: 1; grid-row: 1 / -1; align-self: center; margin: 0; }
 .btb__title img { display: block; width: 100%; max-width: 640px; height: auto; filter: drop-shadow(0 14px 28px rgba(0, 0, 0, .75)); }
-.btb__bar { grid-column: 2; grid-row: 2; justify-self: start; padding: 9px 20px 7px; background: #d3161d; color: #ebe4d8; font: 400 34px/1 "Anton", var(--disp); text-transform: uppercase; letter-spacing: .03em; box-shadow: inset 0 0 0 3px #d3161d, inset 0 0 0 5px #ebe4d8, 0 10px 24px -8px rgba(0, 0, 0, .8); }
-.btb__when { grid-column: 2; grid-row: 3; margin-top: 18px; padding-bottom: 12px; border-bottom: 2px solid #ebe4d8; color: #ebe4d8; font: 400 24px/1.15 "Anton", var(--disp); text-transform: uppercase; letter-spacing: .01em; }
+.btb__bar { grid-column: 2; grid-row: 2; justify-self: start; padding: 9px 20px 7px; background: #d3161d; color: #ebe4d8; font: 700 34px/1 var(--disp); text-transform: uppercase; letter-spacing: .03em; box-shadow: inset 0 0 0 3px #d3161d, inset 0 0 0 5px #ebe4d8, 0 10px 24px -8px rgba(0, 0, 0, .8); }
+.btb__when { grid-column: 2; grid-row: 3; margin-top: 18px; padding-bottom: 12px; border-bottom: 2px solid #ebe4d8; color: #ebe4d8; font: 700 24px/1.15 var(--disp); text-transform: uppercase; letter-spacing: .01em; }
 .btb__when i { font-style: normal; color: #d3161d; padding: 0 .2em; }
 .btb__text { grid-column: 2; grid-row: 4; margin-top: 10px; color: var(--muted); max-width: 46ch; }
 .btb .season__poster { rotate: 1.5deg; box-shadow: 0 0 0 5px #ebe4d8, 0 26px 50px -16px rgba(0, 0, 0, .9); }
-.btb .tile__k { font-family: "Anton", var(--disp); font-weight: 400; font-size: 16px; color: #d3161d; }
+.btb .tile__k { font-family: var(--disp); font-weight: 700; font-size: 16px; color: #d3161d; }
 .btb .tile { background: #121010; box-shadow: inset 0 3px 0 #d3161d, 0 16px 34px -14px rgba(0, 0, 0, .9); }
 .btb .tile img { border-top: 3px solid #d3161d; }
 
@@ -920,9 +920,6 @@ body::after, .cover::after, .event::after, .lower__bg::after, .org__stage::after
 /* v82 «Фото с баттлов» — доска во всех сезонах: целые фото, листаются страницами (стрелки, колесо, свайп); смена — в стиле сезона */
 .krug.is-board .krug__row { overflow-x: clip; overflow-y: visible; justify-content: space-between; scroll-snap-type: none; cursor: default; touch-action: pan-y; }
 .krug.is-board .krug__ph img { object-fit: cover; }
-.krug--hunt.is-board .krug__ph img { width: calc((var(--h) - 56px) * 1.5); }
-.krug--svoboda.is-board .krug__ph img { width: calc((var(--h) - 14px) * 1.5); }
-.krug--btb.is-board .krug__ph img { width: calc(var(--h) * 1.5); }
 .krug.is-board .krug__ph[hidden] { display: none; }
 .krug.is-board .krug__count { min-width: 6.2em; text-align: right; }
 .krug__ph.is-off, .krug__ph.is-on { pointer-events: none; }
@@ -964,7 +961,6 @@ body::after, .cover::after, .event::after, .lower__bg::after, .org__stage::after
 .vp__t i, .eps--side .t i { font-style: normal; padding: 0 .12em; }
 .vp__nav { display: flex; gap: 6px; margin-left: auto; }
 .vp__nav button { width: 38px; height: 38px; font: 700 18px/1 var(--disp); cursor: pointer; transition: background-color .2s, color .2s; }
-.vp__t a { text-transform: uppercase; border-bottom: 2px solid; }
 .eps--side { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; margin: 0; padding: 0; list-style: none; }
 .eps--side button { display: grid; grid-template-columns: 26px 92px minmax(0, 1fr); align-items: center; gap: 12px; width: 100%; padding: 6px 10px 6px 6px; background: none; color: inherit; text-align: left; cursor: pointer; transition: background-color .2s, box-shadow .2s; }
 .eps--side .n { font-variant-numeric: tabular-nums; }
@@ -991,7 +987,6 @@ body::after, .cover::after, .event::after, .lower__bg::after, .org__stage::after
 .archive .vp__t b small, .archive .eps--side .t small { color: var(--ink-red); }
 .archive .vp__nav button { background: #1b1614; color: #e8dcc0; }
 .archive .vp__nav button:hover { background: var(--ink-red); }
-.archive .vp__t a { font: 900 13px/1 var(--slab); color: var(--ink-red-d); }
 .archive .eps--side button { border-top: 2px dashed rgba(27, 22, 20, .3); }
 .archive .eps--side li:first-child button { border-top: 0; }
 .archive .eps--side .n { font: 900 15px/1 var(--slab); color: rgba(27, 22, 20, .45); }
@@ -1013,7 +1008,6 @@ body::after, .cover::after, .event::after, .lower__bg::after, .org__stage::after
 .sv .vp__t i, .sv .eps--side .t i { color: #ff2f2f; }
 .sv .vp__nav button { border-radius: 50%; background: #1d1b1f; color: #fff; box-shadow: 0 0 0 2px rgba(255, 255, 255, .16); }
 .sv .vp__nav button:hover { background: #ff2f2f; }
-.sv .vp__t a { font: 700 14px/1 var(--disp); color: #fff; }
 .sv .eps--side { padding: 6px; background: rgba(10, 9, 12, .72); box-shadow: 0 16px 34px -14px rgba(0, 0, 0, .9); }
 .sv .eps--side button { border-top: 1px solid rgba(255, 255, 255, .1); }
 .sv .eps--side li:first-child button { border-top: 0; }
@@ -1031,18 +1025,17 @@ body::after, .cover::after, .event::after, .lower__bg::after, .org__stage::after
 .btb .vp__poster img, .btb .eps--side img { filter: url("#ca-tiles"); }
 .btb .vp__play { border-radius: 0; background: #d3161d; color: #ebe4d8; box-shadow: inset 0 0 0 3px #d3161d, inset 0 0 0 5px #ebe4d8, 0 14px 30px rgba(0, 0, 0, .6); rotate: -3deg; }
 .btb .vp__t { background: #d3161d; color: #ebe4d8; box-shadow: inset 0 0 0 3px #d3161d, inset 0 0 0 5px #ebe4d8; padding: 14px 18px 12px; }
-.btb .vp__n { font: 400 16px/1 "Anton", var(--disp); letter-spacing: .04em; }
-.btb .vp__t b { font: 400 clamp(22px, 2vw, 30px)/1 "Anton", var(--disp); letter-spacing: .01em; }
+.btb .vp__n { font: 700 16px/1 var(--disp); letter-spacing: .04em; }
+.btb .vp__t b { font: 700 clamp(22px, 2vw, 30px)/1 var(--disp); letter-spacing: .01em; }
 .btb .vp__t b small { font-size: 12px; color: #f6c9c3; letter-spacing: .14em; }
 .btb .vp__t i { color: #0b0a0a; font-size: .72em; }
 .btb .vp__nav button { background: #0b0a0a; color: #ebe4d8; box-shadow: inset 0 0 0 2px #ebe4d8; }
 .btb .vp__nav button:hover { background: #ebe4d8; color: #d3161d; }
-.btb .vp__t a { font: 400 15px/1 "Anton", var(--disp); letter-spacing: .04em; color: #ebe4d8; }
 .btb .eps--side { gap: 6px; }
 .btb .eps--side button { background: rgba(18, 16, 16, .86); box-shadow: inset 3px 0 0 transparent; }
-.btb .eps--side .n { font: 400 16px/1 "Anton", var(--disp); color: rgba(235, 228, 216, .4); }
+.btb .eps--side .n { font: 700 16px/1 var(--disp); color: rgba(235, 228, 216, .4); }
 .btb .eps--side img { box-shadow: 0 0 0 2px #ebe4d8; }
-.btb .eps--side .t { font: 400 clamp(15px, 1.2vw, 18px)/1.08 "Anton", var(--disp); color: #ebe4d8; letter-spacing: .01em; }
+.btb .eps--side .t { font: 700 clamp(15px, 1.2vw, 18px)/1.08 var(--disp); color: #ebe4d8; letter-spacing: .01em; }
 .btb .eps--side .t small { color: #d3161d; font-size: 11px; letter-spacing: .14em; }
 .btb .eps--side .t i { color: #d3161d; font-size: .75em; }
 .btb .eps--side button:hover { background: rgba(40, 18, 18, .92); }
@@ -1079,8 +1072,61 @@ body::after, .cover::after, .event::after, .lower__bg::after, .org__stage::after
 .bracket__list .guns { width: 46px; height: 42px; }
 .vp__t .guns { width: 1.6em; height: 1.35em; margin: 0 .1em; }
 .eps--side .t .guns { width: 1.7em; height: 1.4em; margin: -.2em .1em; }
-.bracket__fmt { margin: -2px 0 14px 4px; color: #e8dcc0; text-shadow: 0 2px 8px rgba(0, 0, 0, .8); }
 @media (max-width: 767px) { .bracket__list .guns { width: 34px; height: 31px; } }
+
+/* v92 Пары 1/4: ники крупнее, от ширины ленты */
+.bracket .bracket__list li { container-type: inline-size; }
+.bracket .bracket__list b { font-size: clamp(15px, 4.3cqw, 36px); line-height: 1.02; white-space: normal; text-wrap: balance; }
+.bracket .bracket__list .guns { width: clamp(34px, 8cqw, 64px); height: clamp(31px, 7.3cqw, 58px); }
+
+/* v92 Доска фото: ширина фото = (ряд − зазоры) / n из JS (--pw), фото 3:2 — ряд заполнен без дыр */
+.krug.is-board .krug__ph { width: var(--pw); }
+.krug.is-board .krug__ph img { width: 100%; height: auto; aspect-ratio: 3 / 2; }
+.krug--hunt.is-board .krug__ph:nth-child(2n) { translate: 0 6px; }
+
+/* v92 Плеер: YouTube — иконкой рядом со стрелками; под подписью плашка канала «Кубок МЦ · Подписаться» в стиле сезона */
+.vp__yt { position: relative; display: block; width: 38px; height: 38px; transition: background-color .2s, color .2s; }
+.vp__yt::before { content: ""; position: absolute; inset: 0; margin: auto; width: 20px; height: 14px; background: currentColor; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 17'%3E%3Cpath d='M23.5 2.7A3 3 0 0 0 21.4.5C19.5 0 12 0 12 0S4.5 0 2.6.5A3 3 0 0 0 .5 2.7C0 4.6 0 8.5 0 8.5s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8ZM9.6 12.1V4.9l6.2 3.6-6.2 3.6Z'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 17'%3E%3Cpath d='M23.5 2.7A3 3 0 0 0 21.4.5C19.5 0 12 0 12 0S4.5 0 2.6.5A3 3 0 0 0 .5 2.7C0 4.6 0 8.5 0 8.5s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8ZM9.6 12.1V4.9l6.2 3.6-6.2 3.6Z'/%3E%3C/svg%3E") center / contain no-repeat; }
+.vp__chan { display: flex; align-items: center; gap: 16px; margin-top: 16px; padding: 14px 16px; }
+.vp__chan img { flex: none; width: 58px; height: 58px; padding: 16px 12px; border-radius: 50%; object-fit: contain; background: #111; }
+.vp__chan p { display: grid; gap: 3px; margin: 0 auto 0 0; min-width: 0; }
+.vp__chan b { font: 700 clamp(20px, 1.7vw, 26px)/1 var(--disp); text-transform: uppercase; }
+.vp__chan span { font: 500 15px/1.2 var(--text); opacity: .7; }
+.vp__chan a { flex: none; padding: 13px 24px 12px; font: 700 17px/1 var(--disp); text-transform: uppercase; letter-spacing: .02em; transition: background-color .2s, color .2s, translate .2s; }
+.vp__chan a:hover { translate: 0 -2px; }
+/* HUNT: бумажная плашка, круг логотипа бордовый, кнопка чёрная */
+.archive .vp__yt { background: #1b1614; color: #e8dcc0; }
+.archive .vp__yt:hover { background: var(--ink-red); }
+.archive .vp__chan { background: var(--noise), #e8dcc0; color: #1b1614; box-shadow: 0 8px 18px -10px rgba(40, 22, 10, .7); rotate: -.3deg; }
+.archive .vp__chan img { background: var(--ink-red); }
+.archive .vp__chan b { font: 900 clamp(19px, 1.6vw, 24px)/1 var(--slab); }
+.archive .vp__chan span { font-family: var(--mono); font-size: 13px; letter-spacing: .06em; color: var(--ink-red); opacity: 1; }
+.archive .vp__chan a { background: #1b1614; color: #e8dcc0; font: 900 16px/1 var(--slab); }
+.archive .vp__chan a:hover { background: var(--ink-red); }
+/* Св*бода: тёмная плашка, круглые формы, красная пилюля */
+.sv .vp__yt { border-radius: 50%; background: #1d1b1f; color: #fff; box-shadow: 0 0 0 2px rgba(255, 255, 255, .16); }
+.sv .vp__yt:hover { background: #ff2f2f; }
+.sv .vp__chan { background: #0e0e0e; color: #fff; box-shadow: 0 16px 34px -14px rgba(0, 0, 0, .9); }
+.sv .vp__chan img { background: #ff2f2f; }
+.sv .vp__chan a { border-radius: 999px; background: #fff; color: #111; }
+.sv .vp__chan a:hover { background: #ff2f2f; color: #fff; }
+/* BTB: красная плашка с костяной обводкой, кнопка костяная */
+.btb .vp__yt { background: #0b0a0a; color: #ebe4d8; box-shadow: inset 0 0 0 2px #ebe4d8; }
+.btb .vp__yt:hover { background: #ebe4d8; color: #d3161d; }
+.btb .vp__chan { background: #121010; color: #ebe4d8; box-shadow: inset 0 0 0 2px #ebe4d8, 0 16px 34px -14px rgba(0, 0, 0, .9); }
+.btb .vp__chan img { border-radius: 0; background: #d3161d; box-shadow: inset 0 0 0 2px #ebe4d8; }
+.btb .vp__chan a { background: #ebe4d8; color: #d3161d; }
+.btb .vp__chan a:hover { background: #d3161d; color: #ebe4d8; }
+
+@media (max-width: 767px) {
+  .vp__chan { flex-wrap: wrap; gap: 12px 14px; padding: 12px; }
+  .vp__chan img { width: 50px; height: 50px; padding: 14px 10px; }
+  .vp__chan a { flex: 1 1 100%; text-align: center; }
+}
+
+/* v92 Футер: плитки соцсетей по ширине колонки, а не всегда 4 в ряд — на узком текст ломался по буквам */
+.final__links { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+.final__links a span, .final__links a i { overflow-wrap: normal; word-break: normal; }
 
 /* ============ v35 Мобилка по аудиту (docs/AUDIT_MOBILE.md). Блок последний — поздние правила для ПК его не перебивают ============ */
 
