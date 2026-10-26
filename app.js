@@ -51,7 +51,7 @@ const STAGES = [
     ["HwuMpB11GMY", "Энвими vs Doctor Kapustu!"],
     ["NEY-wCkF81w", "Нокту vs Кулакофф"],
     ["5uMRfEdG6ug", "Smoke [PlanB] vs Eeugene Speed"],
-  ], "BPM · 2 раунда"],
+  ], "BPM, 2 раунда"],
   ["1/4", "Видео скоро появятся"],
   ["1/2", "Ивент ещё не начался"],
   ["Финал", "Ивент ещё не начался"],

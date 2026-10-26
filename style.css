@@ -1296,3 +1296,24 @@ body::after, .cover::after, .event::after { inset: -64px; }
 @media (min-width: 1280px) and (max-width: 1599px) { .final__links { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 /* Счётчик фото не переносится на две строки (в ленте при «Уменьшить движение» стрелок нет и ему было тесно) */
 .krug__count { white-space: nowrap; flex: none; }
+
+/* v97 Мелочи из аудита дизайнера (2026-10-26).
+   Формат баттла и «Москва / 18+» — обычным регистром без разрядки (мелкий капс с разрядкой читался как ИИ-интерфейс), 11px больше нет */
+.vp__t b small, .eps--side .t small, .btb .vp__t b small, .btb .eps--side .t small { font-size: 13px; text-transform: none; letter-spacing: 0 !important; }
+.ev-head__date span { font-size: clamp(15px, 1.2vw, 18px); text-transform: none; letter-spacing: .02em; }
+/* Тап-зоны не меньше 44px */
+.vp__nav button, .vp__yt { width: 44px; height: 44px; }
+.stage { min-height: 44px; }
+.tee__flip button { min-height: 44px; }
+@media (max-width: 767px) { .krug.is-board .krug__nav { width: 44px; height: 44px; } }
+/* «Билеты» в шапке — кнопка в рамке (рамка currentColor работает и в режиме difference над фото) */
+.mast__cta { padding: 10px 18px 9px; box-shadow: inset 0 0 0 2px currentColor; transition: background-color .2s, color .2s; }
+.mast__cta:hover { opacity: 1; background: #fff; color: #0e0e0e; }
+.mast.is-solid .mast__cta { background: var(--accent, #e1141e); color: #fff; box-shadow: none; }
+.mast.is-solid .mast__cta:hover { background: #fff; color: #0e0e0e; }
+/* Организаторы: ники Oswald вместо Dela Gothic, на красной плашке с белой рамкой — тот же приём, что у плашек сезонов */
+.org__stage .org__name { inset: auto auto 5% 4%; padding: .1em .24em .04em; font-family: var(--disp); font-weight: 700; font-size: 10cqw; line-height: .92; text-transform: uppercase; letter-spacing: .01em; background: var(--accent); color: #fff; text-shadow: none; transform: none; rotate: -2deg; box-shadow: inset 0 0 0 3px var(--accent), inset 0 0 0 5px #fff, 0 12px 26px -10px rgba(0, 0, 0, .9); }
+/* Пустоты: перед BTB на телефоне и перед «Организаторами» на ПК */
+@media (max-width: 767px) { .btb { padding-top: 0; } }
+@media (min-width: 768px) { .lower > .orgs { padding-top: clamp(24px, 2.4vw, 36px); } }
+.mast__cta, .vp__chan a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; }
